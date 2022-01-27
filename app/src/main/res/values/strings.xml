@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Vizual</string>
+
+    <string-array name="immagini_name">
+        <item>Immagine 1</item>
+        <item>Immagine 2</item>
+        <item>Immagine 3</item>
+        <item>Immagine 4</item>
+        <item>Immagine 5</item>
+    </string-array>
+</resources>
