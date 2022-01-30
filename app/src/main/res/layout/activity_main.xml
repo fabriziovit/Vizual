@@ -24,7 +24,7 @@
         android:layout_marginStart="550dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="550dp"
-        android:text="Ricevi Anteprima"
+        android:text="@string/get_preview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categorie_combo" />
@@ -46,11 +46,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:dropDownHeight="250sp"
+            android:dropDownHeight="wrap_content"
             android:inputType="none"
             android:popupBackground="@null"
-            android:text="Scegli immagine"
+            android:text="@string/choose_image"
             tools:layout_editor_absoluteY="6dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="326dp"
+        android:layout_height="314dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toEndOf="@+id/mainActivityButton"
+        app:layout_constraintTop_toBottomOf="@+id/logo_imageView"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
