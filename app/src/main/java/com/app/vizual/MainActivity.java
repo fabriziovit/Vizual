@@ -3,12 +3,14 @@ package com.app.vizual;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Interfaces.ApiInterface;
@@ -54,17 +56,12 @@ public class MainActivity extends AppCompatActivity {
             String currentSelection = binding.categorieAuto.getText().toString();
             if (!currentSelection.equals(getResources().getString(R.string.no_image_available)) &&
                     !currentSelection.equals(getResources().getString(R.string.choose_image))) {
-                // Call API
-                Call<ResponseBody> call = apiService.getObjRetrofit().getImage(currentSelection);
-                apiService.callRetrofit(call, response -> {
-                    if (response == null) {
-                        Log.d("DEBUG", "response null");
-                        return;
-                    }
-                    Bitmap bmp = BitmapFactory.decodeStream(response.byteStream());
-                    binding.imageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, 256, 256, false));
-                });
-            }
+
+                Intent intent = new Intent(MainActivity.this, ImageViewActivity.class);
+                intent.putExtra("currentSelection", currentSelection);
+                startActivity(intent);
+            }else
+                Toast.makeText(getApplicationContext(), "Scegli un immagine!", Toast.LENGTH_SHORT).show();
         });
     }
 }
