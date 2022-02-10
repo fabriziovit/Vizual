@@ -1,5 +1,6 @@
 package com.app.vizual;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.app.vizual.databinding.ActivityImageViewBinding;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,6 +33,7 @@ public class ImageViewActivity extends AppCompatActivity {
     private ActivityImageViewBinding binding;
     ApiService apiService = new ApiService();
     String currentSelection;
+    Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +73,7 @@ public class ImageViewActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //TODO
             }
         });
     }
