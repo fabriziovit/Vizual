@@ -1,43 +1,29 @@
 package com.app.vizual;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.os.Bundle;
-
 import com.app.vizual.APIResponse.ApiService;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
+import android.widget.Toast;
 import com.app.vizual.databinding.ActivityImageViewBinding;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ImageViewActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
     private ActivityImageViewBinding binding;
     ApiService apiService = new ApiService();
     String currentSelection;
-    Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final DragRectView view;
 
         binding = ActivityImageViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -73,7 +59,19 @@ public class ImageViewActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                 view = (DragRectView) binding.dragRect;
+
+                if (null != view) {
+                    View finalView = view;
+                    ((DragRectView) view).setOnUpCallback(new DragRectView.OnUpCallback() {
+                        @Override
+                        public void onRectFinished(final Rect rect) {
+                            Toast.makeText(getApplicationContext(), "Rect is (" + rect.left + ", " + rect.top + ", " + rect.right + ", " + rect.bottom + ")",
+                                    Toast.LENGTH_LONG).show();
+                            ((DragRectView) finalView).cancelDragAndDrop();
+                        }
+                    });
+                }
             }
         });
     }

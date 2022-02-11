@@ -24,6 +24,12 @@
         app:tint="@color/white"
         app:srcCompat="@android:drawable/ic_menu_crop" />
 
+    <com.app.vizual.DragRectView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dragRect"
+        android:visibility="gone"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
