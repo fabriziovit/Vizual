@@ -4,12 +4,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
+
 import com.app.vizual.APIResponse.ApiService;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.app.vizual.databinding.ActivityImageViewBinding;
 
 import okhttp3.ResponseBody;
@@ -19,11 +23,11 @@ public class ImageViewActivity extends AppCompatActivity {
     private ActivityImageViewBinding binding;
     ApiService apiService = new ApiService();
     String currentSelection;
+    boolean fabClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final DragRectView view;
 
         binding = ActivityImageViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -59,18 +63,21 @@ public class ImageViewActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 view = (DragRectView) binding.dragRect;
-
-                if (null != view) {
-                    View finalView = view;
+                view = (DragRectView) binding.dragRect;
+                if (!fabClicked) {
+                    fabClicked = true;
+                    binding.dragRect.setVisibility(View.VISIBLE);
                     ((DragRectView) view).setOnUpCallback(new DragRectView.OnUpCallback() {
                         @Override
                         public void onRectFinished(final Rect rect) {
                             Toast.makeText(getApplicationContext(), "Rect is (" + rect.left + ", " + rect.top + ", " + rect.right + ", " + rect.bottom + ")",
-                                    Toast.LENGTH_LONG).show();
-                            ((DragRectView) finalView).cancelDragAndDrop();
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
+                } else {
+                    binding.dragRect.setVisibility(View.GONE);
+                    fabClicked = false;
+                    // invio per avere parte ritagliata più dettagliata calcolando la posizione del drag all'interno dell'immagine
                 }
             }
         });
@@ -86,12 +93,12 @@ public class ImageViewActivity extends AppCompatActivity {
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
             if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
             } else {
-                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
             }
-            Log.d("DEBUG", "width : "+ finalWidth);
-            Log.d("DEBUG", "height : "+ finalHeight);
+            Log.d("DEBUG", "width : " + finalWidth);
+            Log.d("DEBUG", "height : " + finalHeight);
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             return image;
         } else {
