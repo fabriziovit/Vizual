@@ -13,11 +13,13 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 
 public interface ApiInterface {
     @GET("get-images")
     Call<ListImages> getImages();
 
+    @Streaming
     @FormUrlEncoded
     @POST("get-image")
     Call<ResponseBody> getImage(@Field("name") String name);

@@ -4,25 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.app.vizual.APIResponse.ApiService;
-import com.app.vizual.Interfaces.ApiInterface;
 import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityMainBinding;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {

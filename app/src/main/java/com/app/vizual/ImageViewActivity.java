@@ -4,12 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
-
 import com.app.vizual.APIResponse.ApiService;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.DisplayMetrics;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -32,11 +31,6 @@ public class ImageViewActivity extends AppCompatActivity {
         binding = ActivityImageViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-
         //GetExtra per prendere il nome dell'immagine ed eseguire le API
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("currentSelection") != null) {
@@ -44,21 +38,27 @@ public class ImageViewActivity extends AppCompatActivity {
         }
 
         // Call API
-        Call<ResponseBody> call = apiService.getObjRetrofit().getImage(currentSelection);
-        apiService.callRetrofit(call, response -> {
-            if (response == null) {
-                Log.d("DEBUG", "response null");
-                return;
-            }
-            binding.progressBar.setVisibility(View.VISIBLE);
-            Bitmap bmp = BitmapFactory.decodeStream(response.byteStream());
-            bmp.getWidth();
-            bmp.getHeight();
-
-            Bitmap scaledBitmap = resize(bmp, width, height);
-            binding.progressBar.setVisibility(View.GONE);
-            binding.imageView.setImageBitmap(scaledBitmap);
-        });
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Call<ResponseBody> call = apiService.getObjRetrofit().getImage(currentSelection);
+            apiService.callRetrofit(call, response -> {
+                if (response == null) {
+                    Log.d("DEBUG", "response null");
+                    return;
+                }
+                binding.progressBar.setVisibility(View.VISIBLE);
+                Bitmap bmp = BitmapFactory.decodeStream(response.byteStream());
+                //immagine ridimensiionata: I/System.out: 1250 1503  max width: 2560 max height: 1504 dim immagine originale width: 32001 height: 38474 ratio 0.03909133440765192
+                //trovare ratio o farselo inviare dal server?! moltiplicare le coordinate del crap per il ratio e ritornarle al server che dovra poi rispedire solo la parte scelta
+                // dopo la prima conversione salvare le immagini in locale e poi cancellarle una volta spento il server o ...
+                binding.imageView.setImageBitmap(bmp);
+                binding.progressBar.setVisibility(View.GONE);
+            });
+        }
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
