@@ -4,25 +4,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
+
 import com.app.vizual.APIResponse.ApiService;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.app.vizual.databinding.ActivityImageViewBinding;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class ImageViewActivity extends AppCompatActivity {
     private ActivityImageViewBinding binding;
     ApiService apiService = new ApiService();
     String currentSelection;
     boolean fabClicked = false;
+    boolean isFABOpen = false;
+    boolean isCropDisabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class ImageViewActivity extends AppCompatActivity {
             currentSelection = bundle.getString("currentSelection");
         }
 
+        /*
         // Call API
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
@@ -59,50 +63,74 @@ public class ImageViewActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
             });
         }
+         */
+        Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test), 1250, 1504, false);
+        binding.imageView.setImageBitmap(bm);
+        binding.progressBar.setVisibility(View.GONE);
+        binding.textView.setVisibility(View.GONE);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view = (DragRectView) binding.dragRect;
-                if (!fabClicked) {
-                    fabClicked = true;
-                    binding.dragRect.setVisibility(View.VISIBLE);
-                    ((DragRectView) view).setOnUpCallback(new DragRectView.OnUpCallback() {
-                        @Override
-                        public void onRectFinished(final Rect rect) {
-                            Toast.makeText(getApplicationContext(), "Rect is (" + rect.left + ", " + rect.top + ", " + rect.right + ", " + rect.bottom + ")",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    binding.dragRect.setVisibility(View.GONE);
-                    fabClicked = false;
-                    // invio per avere parte ritagliata più dettagliata calcolando la posizione del drag all'interno dell'immagine
-                }
+        //bottone per aprire il menu dei floating button
+        binding.fab.setOnClickListener(view -> {
+            if (!isFABOpen) {
+                showFABMenu();
+            } else {
+                closeFABMenu();
+                binding.imageView.setShowCropOverlay(false);
+                isCropDisabled = true;
             }
+        });
+
+        //click bottone per il ritaglio dell'immagine
+        binding.fab2.setOnClickListener(view -> {
+            if(!fabClicked){
+                fabClicked = true;
+                binding.imageView.setShowCropOverlay(true);
+            }else {
+                if (!isCropDisabled){
+                    binding.imageView.setShowCropOverlay(false);
+                    //trovo i punti x,y del crop
+                    System.out.println(Arrays.toString(binding.imageView.getCropPoints()));
+                    //trovo x e y e la width e la height
+                    System.out.println("AAAAAAAA    " + binding.imageView.getCropRect().left + ", " + binding.imageView.getCropRect().top + ", " + binding.imageView.getCropRect().width() + ", " + binding.imageView.getCropRect().height());
+
+                    //prendere questo per i punti all'interno del bitmap
+                    System.out.println("EEEEEEEE    " + binding.imageView.getCropRect().left + ", " + binding.imageView.getCropRect().top + ", " + binding.imageView.getCropRect().right + ", " + binding.imageView.getCropRect().bottom);
+
+                    System.out.println("BBBBBBBB    " + binding.imageView.getWholeImageRect().left + ", " + binding.imageView.getWholeImageRect().top + ", " + binding.imageView.getWholeImageRect().right + ", " + binding.imageView.getWholeImageRect().bottom);
+                    System.out.println("CCCCCCCC    " + binding.imageView.getCropWindowRect().left + ", " + binding.imageView.getCropWindowRect().top + ", " + binding.imageView.getCropWindowRect().width() + ", " + binding.imageView.getCropWindowRect().height());
+                    binding.imageView.setImageBitmap(binding.imageView.getCroppedImage());
+                    /* OUTPUT SE SI USA IL CROP SU TUTTO IL BITMAP
+                    I/System.out: [124.99999, 150.40001, 1125.0, 150.40001, 1125.0, 1353.5999, 124.99999, 1353.5999]  RECTANGLE
+                    I/System.out: AAAAAAAA    125, 150, 1000, 1204
+                    I/System.out: BBBBBBBB    0, 0, 1250, 1504
+                    I/System.out: CCCCCCCC    121.0, 145.65123, 968.0, 1164.6975
+                     */
+                    fabClicked = false;
+                }else
+                    binding.imageView.setShowCropOverlay(true);
+                isCropDisabled = false;
+            }
+        });
+
+        //mettere il bitmap in un anuova activity? in modo che l'image view possa essere zommata?
+        binding.fab3.setOnClickListener(view -> {
+            //da fare
         });
     }
 
-    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
-        if (maxHeight > 0 && maxWidth > 0) {
-            int width = image.getWidth();
-            int height = image.getHeight();
-            float ratioBitmap = (float) width / (float) height;
-            float ratioMax = (float) maxWidth / (float) maxHeight;
+    private void showFABMenu(){
+        isFABOpen=true;
+        binding.fab2.setVisibility(View.VISIBLE);
+        binding.fab3.setVisibility(View.VISIBLE);
+        binding.fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        binding.fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_100));
+    }
 
-            int finalWidth = maxWidth;
-            int finalHeight = maxHeight;
-            if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float) maxHeight * ratioBitmap);
-            } else {
-                finalHeight = (int) ((float) maxWidth / ratioBitmap);
-            }
-            Log.d("DEBUG", "width : " + finalWidth);
-            Log.d("DEBUG", "height : " + finalHeight);
-            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-            return image;
-        } else {
-            return image;
-        }
+    private void closeFABMenu(){
+        isFABOpen=false;
+        binding.fab2.animate().translationY(0);
+        binding.fab3.animate().translationY(0);
+        binding.fab2.setVisibility(View.GONE);
+        binding.fab3.setVisibility(View.GONE);
     }
 }

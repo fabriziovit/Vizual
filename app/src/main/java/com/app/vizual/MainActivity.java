@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        /*
         Call<ListImages> call = apiService.getObjRetrofit().getImages();
         apiService.callRetrofit(call, response -> {
             if (response != null)
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
             binding.categorieAuto.setAdapter(arrayAdapter);
         });
+         */
+        imagesName = new ArrayList<>(Collections.singletonList(getResources().getString(R.string.no_image_available)));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
+        binding.categorieAuto.setAdapter(arrayAdapter);
 
         btnPressed(binding);
     }
@@ -47,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
     public void btnPressed(ActivityMainBinding binding) {
         binding.mainActivityButton.setOnClickListener(view -> {
             String currentSelection = binding.categorieAuto.getText().toString();
+
+
+            Intent intent = new Intent(MainActivity.this, ImageViewActivity.class);
+            intent.putExtra("currentSelection", currentSelection);
+            startActivity(intent);
+
+            /*
             if (!currentSelection.equals(getResources().getString(R.string.no_image_available)) &&
                     !currentSelection.equals(getResources().getString(R.string.choose_image))) {
 
@@ -55,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }else
                 Toast.makeText(getApplicationContext(), "Scegli un immagine!", Toast.LENGTH_SHORT).show();
+             */
+
         });
     }
 }

@@ -4,40 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ImageViewActivity">
+    tools:context=".ImageViewActivity"
+    android:background="#FFFEEF">
 
-    <com.ortiz.touchview.TouchImageView
+    <com.theartofdev.edmodo.cropper.CropImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_anchor="@+id/constraintLayout"
+        app:layout_anchorGravity="center"
+        app:cropGuidelines="off"
+        app:cropShowCropOverlay="false"
+        app:cropMaxZoom="3"
+        app:cropAutoZoomEnabled="true"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:outlineAmbientShadowColor="@color/colorPrimary"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_crop"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:outlineAmbientShadowColor="@color/colorPrimary"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_zoom"
+        android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_margin="4dp"
         app:backgroundTint="@color/colorPrimary"
-        android:layout_marginBottom="16dp"
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:tint="@color/white"
-        app:srcCompat="@android:drawable/ic_menu_crop" />
+        app:srcCompat="@drawable/logo_small_cropped"/>
 
-    <com.app.vizual.DragRectView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/dragRect"
-        android:visibility="gone"/>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminate="true"
-        android:indeterminateTintMode="src_atop"
-        android:indeterminateTint="@color/colorPrimary"/>
+        app:layout_anchorGravity="center">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:fontFamily="@font/courgette"
+            android:text="Caricamento immagine.L'operazione potrebbe richiedere qualche minuto..."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

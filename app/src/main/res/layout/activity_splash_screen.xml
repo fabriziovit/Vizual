@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/scene_splash_activity"
     tools:context=".SplashScreenActivity"
-    android:background="@color/white"
+    android:background="#FFFEEF"
     android:paddingTop="24dp">
 
     <ImageView
