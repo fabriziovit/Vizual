@@ -54,15 +54,4 @@
             tools:layout_editor_absoluteY="6dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="326dp"
-        android:layout_height="314dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="100dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/mainActivityButton"
-        app:layout_constraintTop_toBottomOf="@+id/logo_imageView"
-        tools:srcCompat="@tools:sample/avatars" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

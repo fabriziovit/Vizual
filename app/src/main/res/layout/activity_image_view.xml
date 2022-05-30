@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,20 +8,13 @@
     tools:context=".ImageViewActivity"
     android:background="#FFFEEF">
 
-    <com.theartofdev.edmodo.cropper.CropImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_anchor="@+id/constraintLayout"
-        app:layout_anchorGravity="center"
-        app:cropGuidelines="off"
-        app:cropShowCropOverlay="false"
-        app:cropMaxZoom="3"
-        app:cropAutoZoomEnabled="true"/>
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab2"
+        android:id="@+id/fabHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -29,11 +23,11 @@
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:tint="@color/white"
         app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_crop"
+        app:srcCompat="@drawable/ic_home"
         android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab3"
+        android:id="@+id/fabCrop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -42,11 +36,24 @@
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:tint="@color/white"
         app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_zoom"
+        app:srcCompat="@drawable/ic_crop"
         android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabZoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:outlineAmbientShadowColor="@color/colorPrimary"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_zoom"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -11,6 +11,8 @@
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/dropdown_item.xml" value="0.1" />
+        <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/fragment_crop.xml" value="0.14913366336633663" />
+        <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/fragment_zoom.xml" value="0.14913366336633663" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/sample_drag_rect_view.xml" value="0.2848731884057971" />
         <entry key="app/src/main/res/layout/activity_image_view.xml" value="0.43825274481289633" />
         <entry key="app/src/main/res/layout/content_image_view.xml" value="0.1" />
@@ -19,7 +21,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

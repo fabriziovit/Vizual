@@ -1,31 +1,33 @@
 package com.app.vizual;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 import com.app.vizual.APIResponse.ApiService;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
+import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.databinding.ActivityImageViewBinding;
+import com.app.vizual.fragment.CropFragment;
+import com.app.vizual.fragment.ZoomFragment;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
-import java.util.stream.IntStream;
-
-public class ImageViewActivity extends AppCompatActivity {
+public class ImageViewActivity extends AppCompatActivity implements FragmentToActivity {
     private ActivityImageViewBinding binding;
     ApiService apiService = new ApiService();
     String currentSelection;
-    boolean fabClicked = false;
+    //boolean fabClicked = false;
     boolean isFABOpen = false;
     boolean isCropDisabled = false;
+    private FragmentManager fragmentManager;
+    Bitmap bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,25 +66,30 @@ public class ImageViewActivity extends AppCompatActivity {
             });
         }
          */
-        Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test), 1250, 1504, false);
+        bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test), 1250, 1504, false);
+
+        replaceFragment(new ZoomFragment(bm));
+        /*
         binding.imageView.setImageBitmap(bm);
+        */
         binding.progressBar.setVisibility(View.GONE);
         binding.textView.setVisibility(View.GONE);
 
+
         //bottone per aprire il menu dei floating button
-        binding.fab.setOnClickListener(view -> {
+        binding.fabLogo.setOnClickListener(view -> {
             if (!isFABOpen) {
                 showFABMenu();
             } else {
                 closeFABMenu();
-                binding.imageView.setShowCropOverlay(false);
+                //binding.imageView.setShowCropOverlay(false);
                 isCropDisabled = true;
             }
         });
 
         //click bottone per il ritaglio dell'immagine
-        binding.fab2.setOnClickListener(view -> {
-            if(!fabClicked){
+        binding.fabCrop.setOnClickListener(view -> {
+            /*if(!fabClicked){
                 fabClicked = true;
                 binding.imageView.setShowCropOverlay(true);
             }else {
@@ -104,33 +111,63 @@ public class ImageViewActivity extends AppCompatActivity {
                     I/System.out: AAAAAAAA    125, 150, 1000, 1204
                     I/System.out: BBBBBBBB    0, 0, 1250, 1504
                     I/System.out: CCCCCCCC    121.0, 145.65123, 968.0, 1164.6975
-                     */
+
                     fabClicked = false;
                 }else
                     binding.imageView.setShowCropOverlay(true);
                 isCropDisabled = false;
-            }
+            }*/
+            replaceFragment(new CropFragment(bm));
+
         });
 
         //mettere il bitmap in un anuova activity? in modo che l'image view possa essere zommata?
-        binding.fab3.setOnClickListener(view -> {
-            //da fare
+        binding.fabZoom.setOnClickListener(view -> {
+            //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            //bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            //byte[] byteArray = stream.toByteArray();
+            replaceFragment(new ZoomFragment(bm));
+            //Intent intent = new Intent(ImageViewActivity.this, ZoomImageView.class);
+            //intent.putExtra("image", byteArray);
+            //startActivity(intent);
+        });
+
+        binding.fabHome.setOnClickListener(view -> {
+            Intent intent = new Intent(ImageViewActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
     private void showFABMenu(){
         isFABOpen=true;
-        binding.fab2.setVisibility(View.VISIBLE);
-        binding.fab3.setVisibility(View.VISIBLE);
-        binding.fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-        binding.fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_100));
+        binding.fabZoom.setVisibility(View.VISIBLE);
+        binding.fabCrop.setVisibility(View.VISIBLE);
+        binding.fabHome.setVisibility(View.VISIBLE);
+        binding.fabZoom.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        binding.fabCrop.animate().translationY(-getResources().getDimension(R.dimen.standard_100));
+        binding.fabHome.animate().translationY(-getResources().getDimension(R.dimen.standard_145));
     }
 
     private void closeFABMenu(){
         isFABOpen=false;
-        binding.fab2.animate().translationY(0);
-        binding.fab3.animate().translationY(0);
-        binding.fab2.setVisibility(View.GONE);
-        binding.fab3.setVisibility(View.GONE);
+        binding.fabZoom.animate().translationY(0);
+        binding.fabCrop.animate().translationY(0);
+        binding.fabHome.animate().translationY(0);
+        binding.fabZoom.setVisibility(View.GONE);
+        binding.fabCrop.setVisibility(View.GONE);
+        binding.fabHome.setVisibility(View.GONE);
+    }
+
+    private void replaceFragment(Fragment fragment){
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(binding.frameContainer.getId(), fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void communicate(Bitmap data) {
+        bm = data;
     }
 }
