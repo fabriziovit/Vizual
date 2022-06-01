@@ -58,10 +58,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="4dp"
-        app:backgroundTint="@color/colorPrimary"
         android:outlineAmbientShadowColor="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/logo_small_cropped"
         app:tint="@color/white"
-        app:srcCompat="@drawable/logo_small_cropped"/>
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
