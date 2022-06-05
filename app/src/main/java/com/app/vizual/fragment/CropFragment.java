@@ -22,7 +22,6 @@ public class CropFragment extends Fragment {
     boolean isOverlayShowed = false;
     private FragmentToActivity mCallback;
 
-
     public CropFragment() {
         // Required empty public constructor
     }
@@ -49,7 +48,6 @@ public class CropFragment extends Fragment {
         return view;
     }
 
-
     private void clickFabCancel(){
        fabCancel.setOnClickListener(view -> {
            isOverlayShowed = false;
@@ -64,6 +62,18 @@ public class CropFragment extends Fragment {
                 cropImageView.setShowCropOverlay(false);
                 isOverlayShowed = false;
                 bm = cropImageView.getCroppedImage();
+                System.out.println("CROP: "+cropImageView.getCropRect().left+" "+cropImageView.getCropRect().top+" "+cropImageView.getCropRect().width()+"  "+cropImageView.getCropRect().height());
+
+                //Richiesta Api passandogli left = cropImageView.getCropRect().left+ visibleRect.left top= cropImageView.getCropRect().top+visibleRect.top
+                //width = cropImageView.getCropRect().width()  height = cropImageView.getCropRect().height()
+                //Creare nuova Activity/Fragment con il nuovo bitmap.
+                //Salvare il bitmap originale e creare un tasto per poterlo poi utilizzare nella imageview.
+                /*
+                Zoom: 336 0 2617  1488
+                CROP: 25 433 1466  893
+
+                left = 336+25  top= 0+433 w : 1466 h:893
+                 */
                 cropImageView.setImageBitmap(bm);
                 mCallback.communicate(bm);
             }

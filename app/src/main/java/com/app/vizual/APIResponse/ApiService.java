@@ -48,7 +48,7 @@ public class ApiService {
                 .build().create(ApiInterface.class);
     }
 
-    private OkHttpClient createClient() {
+    public static OkHttpClient createClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.level(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()

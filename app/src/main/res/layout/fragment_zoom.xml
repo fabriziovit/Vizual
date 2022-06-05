@@ -7,10 +7,10 @@
     tools:context=".fragment.ZoomFragment"
     android:background="#FFFEEF">
 
-    <com.ortiz.touchview.TouchImageView
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
         android:id="@+id/zoomImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabZoom25"
