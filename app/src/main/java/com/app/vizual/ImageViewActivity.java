@@ -26,12 +26,13 @@ import retrofit2.Call;
 
 public class ImageViewActivity extends AppCompatActivity implements FragmentToActivity {
     private ActivityImageViewBinding binding;
-    ApiService apiService = new ApiService();
-    String currentSelection;
-    boolean isFABOpen = false;
-    boolean isCropDisabled = false;
+    private ApiService apiService = new ApiService();
+    private String currentSelection;
+    private boolean isFABOpen = false;
+    private boolean isCropDisabled = false;
     private FragmentManager fragmentManager;
-    Bitmap bm;
+    public static Bitmap originalBitmap;
+    private Bitmap bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 }
                 binding.progressBar.setVisibility(View.VISIBLE);
                 bm = BitmapFactory.decodeStream(response.byteStream());
+                originalBitmap = bm;
                 replaceFragment(new ZoomFragment(bm));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
@@ -67,32 +69,22 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
             });
         }
 
-        /*
-        bm = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.test), 1250, 1504, false);
-        replaceFragment(new ZoomFragment(bm));
-        binding.imageView.setImageBitmap(bm);
-        binding.progressBar.setVisibility(View.GONE);
-        binding.textView.setVisibility(View.GONE);
-        */
-
-        //bottone per aprire il menu dei floating button
+        //click yo open the floating button menu
         binding.fabLogo.setOnClickListener(view -> {
             if (!isFABOpen) {
                 showFABMenu();
             } else {
                 closeFABMenu();
-                //binding.imageView.setShowCropOverlay(false);
-                isCropDisabled = true;
             }
         });
 
-        //click bottone per il ritaglio dell'immagine
+        //click to open fragment for the crop of the image
         binding.fabCrop.setOnClickListener(view -> {
             replaceFragment(new CropFragment(bm));
 
         });
 
-        //mettere il bitmap in un anuova activity? in modo che l'image view possa essere zommata?
+        //click to open fragment for the zoom of the image(the fragment starts when this activity is created)
         binding.fabZoom.setOnClickListener(view -> {
             replaceFragment(new ZoomFragment(bm));
         });

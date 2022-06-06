@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static ActivityMainBinding binding;
     private ArrayList<String> imagesName;
-    ApiService apiService = new ApiService();
+    private ApiService apiService = new ApiService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

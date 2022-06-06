@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.vizual.CustomGlideApp;
+import com.app.vizual.ImageViewActivity;
 import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.R;
 import com.davemorrissey.labs.subscaleview.ImageSource;
@@ -25,10 +26,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class ZoomFragment extends Fragment{
-    View view;
-    Bitmap bm;
-    SubsamplingScaleImageView subsamplingScaleImageView;
-    FloatingActionButton fabZoom1, fabZoom15, fabZoom2;
+    private View view;
+    private Bitmap bm;
+    private SubsamplingScaleImageView subsamplingScaleImageView;
+    private FloatingActionButton fabPassImage, fabZoom15, fabOriginalImage;
     private FragmentToActivity mCallback;
 
     public ZoomFragment() {
@@ -48,46 +49,21 @@ public class ZoomFragment extends Fragment{
         subsamplingScaleImageView = view.findViewById(R.id.zoomImageView);
         CustomGlideApp glideApp = new CustomGlideApp();
         glideApp.init(this, bm, subsamplingScaleImageView);
-        fabZoom1 = view.findViewById(R.id.fabZoom1);
+        fabPassImage = view.findViewById(R.id.fabPassImageZoomed);
         fabZoom15 = view.findViewById(R.id.fabZoom15);
-        fabZoom2 = view.findViewById(R.id.fabZoom25);
+        fabOriginalImage = view.findViewById(R.id.fabOriginalImage);
 
-        clickZoom25();
-        /*
-        clickZoom1();
-        clickZoom15();
+        clickReset();
+        clickGetImageResized();
 
-         */
+        //clickZoom15();
 
         return view;
     }
 
-    private void clickZoom1() {
-        //Richiesta immagine 1x
-        fabZoom1.setOnClickListener(view -> {
-            subsamplingScaleImageView.setMaxScale(0.5f);
-            /*touchImageView.setMaxZoom(1);
-            touchImageView.setMinZoom(1);
-            touchImageView.setZoom(1);
-
-             */
-        });
-    }
-
-    private void clickZoom15() {
-        //Richiesta immagine 1.5x
-        fabZoom15.setOnClickListener(view -> {
-            subsamplingScaleImageView.setMaxScale(1);
-            /*touchImageView.setMaxZoom(1.5f);
-            touchImageView.setMinZoom(1.5f);
-            touchImageView.setZoom(1.5f);
-             */
-        });
-    }
-
-    private void clickZoom25() {
-        //Richiesta immagine 2.5x
-        fabZoom2.setOnClickListener(view -> {
+    //get Image zoomed to the crop
+    private void clickGetImageResized() {
+        fabPassImage.setOnClickListener(view -> {
             PointF leftTopCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(0, 0));
             PointF rightBottomCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(subsamplingScaleImageView.getWidth(), subsamplingScaleImageView.getHeight()));
             RectF visibleRectF = new RectF(leftTopCoord.x, leftTopCoord.y, rightBottomCoord.x, rightBottomCoord.y);
@@ -110,6 +86,30 @@ public class ZoomFragment extends Fragment{
 
             subsamplingScaleImageView.setImage(ImageSource.bitmap(visibleWallBitmap));
             mCallback.communicate(visibleWallBitmap);
+        });
+    }
+
+    //Da provare
+    //Reset zoom and position in the image
+    private void clickReset() {
+        //Richiesta immagine 2.5x
+        fabOriginalImage.setOnClickListener(view -> {
+            //subsamplingScaleImageView.resetScaleAndCenter(); puo funzionare usando questo metodo? forse con qualche flag
+            bm = ImageViewActivity.originalBitmap;
+            subsamplingScaleImageView.setImage(ImageSource.bitmap(bm));
+            mCallback.communicate(bm);
+        });
+    }
+
+    //Vedere se tenere questo metodo/bottone
+    private void clickZoom15() {
+        //Richiesta immagine 1.5x
+        fabZoom15.setOnClickListener(view -> {
+            subsamplingScaleImageView.setMaxScale(1);
+            /*touchImageView.setMaxZoom(1.5f);
+            touchImageView.setMinZoom(1.5f);
+            touchImageView.setZoom(1.5f);
+             */
         });
     }
 }

@@ -9,17 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.vizual.ImageViewActivity;
 import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class CropFragment extends Fragment {
-    View view;
-    Bitmap bm;
-    CropImageView cropImageView;
-    FloatingActionButton fabCancel, fabCrop;
-    boolean isOverlayShowed = false;
+    private View view;
+    private Bitmap bm;
+    private CropImageView cropImageView;
+    private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
+    private boolean isOverlayShowed = false;
     private FragmentToActivity mCallback;
 
     public CropFragment() {
@@ -37,6 +38,7 @@ public class CropFragment extends Fragment {
         cropImageView = view.findViewById(R.id.cropImageView);
         fabCancel = view.findViewById(R.id.fabCancel);
         fabCrop = view.findViewById(R.id.fabCrop);
+        fabOriginalImage = view.findViewById(R.id.fabOriginalImage);
 
         mCallback = (FragmentToActivity) getContext();
         cropImageView.setImageBitmap(bm);
@@ -45,6 +47,7 @@ public class CropFragment extends Fragment {
 
         clickFabCrop();
         clickFabCancel();
+        clickGetOriginal();
         return view;
     }
 
@@ -74,11 +77,21 @@ public class CropFragment extends Fragment {
 
                 left = 336+25  top= 0+433 w : 1466 h:893
                  */
+                //create new Activity passing
                 cropImageView.setImageBitmap(bm);
                 mCallback.communicate(bm);
             }
             isOverlayShowed = true;
             cropImageView.setShowCropOverlay(true);
+        });
+    }
+
+    //Da provare
+    private void clickGetOriginal(){
+        fabOriginalImage.setOnClickListener(view -> {
+            bm = ImageViewActivity.originalBitmap;
+            cropImageView.setImageBitmap(bm);
+            mCallback.communicate(bm);
         });
     }
 }

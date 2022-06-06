@@ -20,6 +20,19 @@
         app:cropAutoZoomEnabled="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabOriginalImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="110dp"
+        android:layout_marginEnd="12dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:outlineAmbientShadowColor="@color/colorPrimary"
+        app:fabSize="mini"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/ic_original_dim"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

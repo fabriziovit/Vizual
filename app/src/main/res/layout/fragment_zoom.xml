@@ -13,7 +13,7 @@
         android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabZoom25"
+        android:id="@+id/fabOriginalImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -23,7 +23,7 @@
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:fabSize="mini"
         app:tint="@color/white"
-        app:srcCompat="@drawable/ic_zoomx2"/>
+        app:srcCompat="@drawable/ic_original_dim"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabZoom15"
@@ -36,10 +36,10 @@
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:tint="@color/white"
         app:fabSize="mini"
-        app:srcCompat="@drawable/ic_zoom15" />
+        app:srcCompat="@drawable/ic_zoom" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabZoom1"
+        android:id="@+id/fabPassImageZoomed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -47,7 +47,7 @@
         app:backgroundTint="@color/colorPrimary"
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:tint="@color/white"
-        app:srcCompat="@drawable/ic_zoom1"/>
+        app:srcCompat="@drawable/ic_pass_image"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
