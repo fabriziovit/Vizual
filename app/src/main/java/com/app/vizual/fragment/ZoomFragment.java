@@ -26,7 +26,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class ZoomFragment extends Fragment{
-    private View view;
     private Bitmap bm;
     private SubsamplingScaleImageView subsamplingScaleImageView;
     private FloatingActionButton fabPassImage, fabZoom15, fabOriginalImage;
@@ -43,7 +42,7 @@ public class ZoomFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_zoom, container, false);
+        View view = inflater.inflate(R.layout.fragment_zoom, container, false);
         mCallback = (FragmentToActivity) getContext();
 
         subsamplingScaleImageView = view.findViewById(R.id.zoomImageView);
@@ -106,10 +105,6 @@ public class ZoomFragment extends Fragment{
         //Richiesta immagine 1.5x
         fabZoom15.setOnClickListener(view -> {
             subsamplingScaleImageView.setMaxScale(1);
-            /*touchImageView.setMaxZoom(1.5f);
-            touchImageView.setMinZoom(1.5f);
-            touchImageView.setZoom(1.5f);
-             */
         });
     }
 }

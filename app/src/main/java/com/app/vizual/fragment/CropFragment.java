@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class CropFragment extends Fragment {
-    private View view;
     private Bitmap bm;
     private CropImageView cropImageView;
     private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
@@ -34,7 +33,7 @@ public class CropFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_crop, container, false);
+        View view = inflater.inflate(R.layout.fragment_crop, container, false);
         cropImageView = view.findViewById(R.id.cropImageView);
         fabCancel = view.findViewById(R.id.fabCancel);
         fabCrop = view.findViewById(R.id.fabCrop);
