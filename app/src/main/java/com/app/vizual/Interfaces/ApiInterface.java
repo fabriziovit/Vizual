@@ -23,4 +23,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("get-image")
     Call<ResponseBody> getImage(@Field("name") String name);
+
+
+    @GET("get-image-cropped/{name}/{left}_{top}_{width}x{height}")
+    Call<ResponseBody> getImageCropped(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("width")int width, @Path("height")int height);
 }

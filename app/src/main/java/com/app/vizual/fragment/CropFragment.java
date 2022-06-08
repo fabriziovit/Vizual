@@ -1,5 +1,6 @@
 package com.app.vizual.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -9,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.vizual.CroppedImageViewActivity;
 import com.app.vizual.ImageViewActivity;
 import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.MainActivity;
 import com.app.vizual.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class CropFragment extends Fragment {
     private Bitmap bm;
+    private String nameImage;
     private CropImageView cropImageView;
     private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
     private boolean isOverlayShowed = false;
@@ -26,8 +30,9 @@ public class CropFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public CropFragment(Bitmap bitmap) {
+    public CropFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
+        this.nameImage = nameImage;
     }
 
     @Override
@@ -64,7 +69,6 @@ public class CropFragment extends Fragment {
                 cropImageView.setShowCropOverlay(false);
                 isOverlayShowed = false;
                 bm = cropImageView.getCroppedImage();
-                System.out.println("CROP: "+cropImageView.getCropRect().left+" "+cropImageView.getCropRect().top+" "+cropImageView.getCropRect().width()+"  "+cropImageView.getCropRect().height());
 
                 //Richiesta Api passandogli left = cropImageView.getCropRect().left+ visibleRect.left top= cropImageView.getCropRect().top+visibleRect.top
                 //width = cropImageView.getCropRect().width()  height = cropImageView.getCropRect().height()
@@ -76,9 +80,13 @@ public class CropFragment extends Fragment {
 
                 left = 336+25  top= 0+433 w : 1466 h:893
                  */
-                //create new Activity passing
-                cropImageView.setImageBitmap(bm);
-                mCallback.communicate(bm);
+                Intent intent = new Intent(getActivity(), CroppedImageViewActivity.class);
+                intent.putExtra("nameImage", nameImage);
+                intent.putExtra("left", cropImageView.getCropRect().left+ZoomFragment.left);
+                intent.putExtra("top", cropImageView.getCropRect().top+ZoomFragment.top);
+                intent.putExtra("width", cropImageView.getCropRect().width());
+                intent.putExtra("height", cropImageView.getCropRect().height());
+                startActivity(intent);
             }
             isOverlayShowed = true;
             cropImageView.setShowCropOverlay(true);

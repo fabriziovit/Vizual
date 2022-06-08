@@ -30,6 +30,7 @@ public class ZoomFragment extends Fragment{
     private SubsamplingScaleImageView subsamplingScaleImageView;
     private FloatingActionButton fabPassImage, fabZoom15, fabOriginalImage;
     private FragmentToActivity mCallback;
+    public static int left = 0, top = 0;
 
     public ZoomFragment() {
         // Required empty public constructor
@@ -70,7 +71,8 @@ public class ZoomFragment extends Fragment{
             final Rect visibleRect = new Rect();
             visibleRectF.round(visibleRect);
             System.out.println("Zoom: "+visibleRect.left+" "+visibleRect.top+" "+visibleRect.width()+"  "+visibleRect.height());
-            System.out.println(visibleRect.right);
+            left = visibleRect.left;
+            top = visibleRect.top;
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.PNG, 0, bos);
             byte[] bitmapdata = bos.toByteArray();
@@ -88,15 +90,17 @@ public class ZoomFragment extends Fragment{
         });
     }
 
-    //Da provare
+    //Da Fixare
     //Reset zoom and position in the image
     private void clickReset() {
         //Richiesta immagine 2.5x
         fabOriginalImage.setOnClickListener(view -> {
-            //subsamplingScaleImageView.resetScaleAndCenter(); puo funzionare usando questo metodo? forse con qualche flag
+            //Errore Bitmap:recycle() vedere come risolvere
+            bm.recycle();
+            subsamplingScaleImageView.setImage(ImageSource.bitmap(ImageViewActivity.originalBitmap));
             bm = ImageViewActivity.originalBitmap;
-            subsamplingScaleImageView.setImage(ImageSource.bitmap(bm));
-            mCallback.communicate(bm);
+            mCallback.communicate(ImageViewActivity.originalBitmap);
+            ImageViewActivity.originalBitmap.recycle();
         });
     }
 

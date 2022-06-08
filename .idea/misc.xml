@@ -7,6 +7,7 @@
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.317" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/drawable/ic_launcher_background.xml" value="0.317" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/drawable/ic_logo_round_background.xml" value="0.317" />
+        <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/activity_cropped_image_view.xml" value="0.14913366336633663" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/activity_image_view.xml" value="0.32317736670293795" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Fabrizio/Documents/Tirocinio/Progetto Android/Vizual/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
@@ -21,7 +22,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

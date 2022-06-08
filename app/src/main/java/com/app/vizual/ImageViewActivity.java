@@ -65,7 +65,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 replaceFragment(new ZoomFragment(bm));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
-                //immagine ridimensiionata: I/System.out: 1250 1503  max width: 2560 max height: 1504 dim immagine originale width: 32001 height: 38474 ratio 0.03909133440765192
+                //immagine ridimensiionata: dim immagine originale width: 32001 height: 38474 ratio 0.03909133440765192
             });
         }
 
@@ -80,7 +80,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
 
         //click to open fragment for the crop of the image
         binding.fabCrop.setOnClickListener(view -> {
-            replaceFragment(new CropFragment(bm));
+            replaceFragment(new CropFragment(bm, currentSelection));
 
         });
 
