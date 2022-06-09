@@ -65,7 +65,6 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 replaceFragment(new ZoomFragment(bm));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
-                //immagine ridimensiionata: dim immagine originale width: 32001 height: 38474 ratio 0.03909133440765192
             });
         }
 
