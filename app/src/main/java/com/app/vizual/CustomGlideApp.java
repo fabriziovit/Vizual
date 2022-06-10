@@ -34,7 +34,7 @@ public class CustomGlideApp extends AppGlideModule {
         Glide.with(fragment).asBitmap().load(bitmap).into(new CustomTarget() {
             @Override
             public void onResourceReady(@NonNull Object resource, @Nullable Transition transition) {
-                subsamplingScaleImageView.setImage(ImageSource.bitmap((Bitmap) resource));
+                subsamplingScaleImageView.setImage(ImageSource.cachedBitmap((Bitmap) resource));
             }
 
             @Override
