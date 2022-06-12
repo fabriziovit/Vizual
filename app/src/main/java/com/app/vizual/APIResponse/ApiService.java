@@ -8,10 +8,16 @@ import com.app.vizual.Interfaces.ApiListenerInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.SocketFactory;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;

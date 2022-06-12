@@ -59,7 +59,7 @@ public class ZoomFragment extends Fragment{
 
         subsamplingScaleImageView = view.findViewById(R.id.zoomImageView);
         CustomGlideApp glideApp = new CustomGlideApp();
-        glideApp.init(this, bm, subsamplingScaleImageView);
+        glideApp.init(getContext(), bm, subsamplingScaleImageView);
         fabPassImage = view.findViewById(R.id.fabPassImageZoomed);
         fabZoom15 = view.findViewById(R.id.fabZoom15);
         fabOriginalImage = view.findViewById(R.id.fabOriginalImage);

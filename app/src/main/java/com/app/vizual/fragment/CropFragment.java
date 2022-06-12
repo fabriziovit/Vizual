@@ -1,15 +1,20 @@
 package com.app.vizual.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.CroppedImageViewActivity;
 import com.app.vizual.ImageViewActivity;
 import com.app.vizual.Interfaces.FragmentToActivity;
@@ -18,6 +23,14 @@ import com.app.vizual.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+
 public class CropFragment extends Fragment {
     private Bitmap bm;
     private String nameImage;
@@ -25,6 +38,7 @@ public class CropFragment extends Fragment {
     private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
     private boolean isOverlayShowed = false;
     private FragmentToActivity mCallback;
+    private ApiService apiService = new ApiService();
 
     public CropFragment() {
         // Required empty public constructor
@@ -56,9 +70,9 @@ public class CropFragment extends Fragment {
     }
 
     private void clickFabCancel(){
-       fabCancel.setOnClickListener(view -> {
-           isOverlayShowed = false;
-           cropImageView.setShowCropOverlay(false);
+        fabCancel.setOnClickListener(view -> {
+            isOverlayShowed = false;
+            cropImageView.setShowCropOverlay(false);
 
         });
     }
