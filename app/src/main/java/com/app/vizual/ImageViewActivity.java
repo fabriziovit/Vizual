@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.StrictMode;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
@@ -29,7 +30,6 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
     private ApiService apiService = new ApiService();
     private String currentSelection;
     private boolean isFABOpen = false;
-    private boolean isCropDisabled = false;
     private FragmentManager fragmentManager;
     public static Bitmap originalBitmap;
     private Bitmap bm;
@@ -40,6 +40,14 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
 
         binding = ActivityImageViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        /*
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        System.out.println(displayMetrics.heightPixels+"   "+
+        displayMetrics.widthPixels);
+        //1504 2560
+         */
 
         //GetExtra per prendere il nome dell'immagine ed eseguire le API
         Bundle bundle = getIntent().getExtras();
@@ -62,7 +70,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 binding.progressBar.setVisibility(View.VISIBLE);
                 bm = BitmapFactory.decodeStream(response.byteStream());
                 originalBitmap = bm;
-                replaceFragment(new ZoomFragment(bm));
+                replaceFragment(new ZoomFragment(bm, currentSelection));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
             });
@@ -85,7 +93,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
 
         //click to open fragment for the zoom of the image(the fragment starts when this activity is created)
         binding.fabZoom.setOnClickListener(view -> {
-            replaceFragment(new ZoomFragment(bm));
+            replaceFragment(new ZoomFragment(bm, currentSelection));
         });
 
         binding.fabHome.setOnClickListener(view -> {

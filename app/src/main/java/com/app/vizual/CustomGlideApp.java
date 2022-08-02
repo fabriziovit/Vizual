@@ -40,6 +40,18 @@ public class CustomGlideApp extends AppGlideModule {
         });
     }
 
+    public void init(Context context, Bitmap bitmap, SubsamplingScaleImageView subsamplingScaleImageView, boolean bool){
+        Glide.with(context).asBitmap().load(bitmap).into(new CustomTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition transition) {
+                subsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {}
+        });
+    }
+
     @Override
     public boolean isManifestParsingEnabled() {
         return false;

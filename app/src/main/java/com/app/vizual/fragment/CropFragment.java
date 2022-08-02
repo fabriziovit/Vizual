@@ -38,7 +38,7 @@ public class CropFragment extends Fragment {
     private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
     private boolean isOverlayShowed = false;
     private FragmentToActivity mCallback;
-    private ApiService apiService = new ApiService();
+    private int left = 0, top = 0;
 
     public CropFragment() {
         // Required empty public constructor
@@ -47,6 +47,13 @@ public class CropFragment extends Fragment {
     public CropFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
         this.nameImage = nameImage;
+    }
+
+    public CropFragment(Bitmap bitmap, String nameImage, int left, int top){
+        bm = bitmap;
+        this.nameImage = nameImage;
+        this.left = left;
+        this.top = top;
     }
 
     @Override
@@ -83,23 +90,13 @@ public class CropFragment extends Fragment {
                 cropImageView.setShowCropOverlay(false);
                 isOverlayShowed = false;
                 bm = cropImageView.getCroppedImage();
-
-                //Richiesta Api passandogli left = cropImageView.getCropRect().left+ visibleRect.left top= cropImageView.getCropRect().top+visibleRect.top
-                //width = cropImageView.getCropRect().width()  height = cropImageView.getCropRect().height()
-                //Creare nuova Activity/Fragment con il nuovo bitmap.
-                //Salvare il bitmap originale e creare un tasto per poterlo poi utilizzare nella imageview.
-                /*
-                Zoom: 336 0 2617  1488
-                CROP: 25 433 1466  893
-
-                left = 336+25  top= 0+433 w : 1466 h:893
-                 */
                 Intent intent = new Intent(getActivity(), CroppedImageViewActivity.class);
                 intent.putExtra("nameImage", nameImage);
                 intent.putExtra("left", cropImageView.getCropRect().left+ZoomFragment.left);
-                intent.putExtra("top", cropImageView.getCropRect().top+ZoomFragment.top);
+                intent.putExtra("top", cropImageView.getCropRect().top+ZoomFragment.top+top);
                 intent.putExtra("width", cropImageView.getCropRect().width());
                 intent.putExtra("height", cropImageView.getCropRect().height());
+                intent.putExtra("level", ZoomFragment.level);
                 startActivity(intent);
             }
             isOverlayShowed = true;

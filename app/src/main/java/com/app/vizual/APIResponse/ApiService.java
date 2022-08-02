@@ -46,14 +46,6 @@ public class ApiService {
                 .build().create(ApiInterface.class);
     }
 
-    public ApiService(String url) {
-        this.objRetrofit = new Retrofit.Builder()
-                .baseUrl(url)
-                .client(createClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ApiInterface.class);
-    }
-
     public static OkHttpClient createClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.level(HttpLoggingInterceptor.Level.BODY);

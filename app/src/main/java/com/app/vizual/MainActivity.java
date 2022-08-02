@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityMainBinding;
+import com.app.vizual.fragment.ZoomFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,12 +41,6 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
             binding.categorieAuto.setAdapter(arrayAdapter);
         });
-
-          /*
-        imagesName = new ArrayList<>(Collections.singletonList(getResources().getString(R.string.no_image_available)));
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
-        binding.categorieAuto.setAdapter(arrayAdapter);
-         */
         btnPressed(binding);
     }
 

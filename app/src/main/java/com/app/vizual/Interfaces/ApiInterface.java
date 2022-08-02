@@ -25,6 +25,10 @@ public interface ApiInterface {
     Call<ResponseBody> getImage(@Field("name") String name);
 
     @Streaming
-    @GET("get-image-cropped/{name}/{left}_{top}_{width}x{height}")
-    Call<ResponseBody> getImageCropped(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("width")int width, @Path("height")int height);
+    @GET("get-image-cropped/{name}/{left}_{top}_{width}x{height}/{level}")
+    Call<ResponseBody> getImageCropped(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("width")int width, @Path("height")int height, @Path("level")int level);
+
+    @Streaming
+    @GET("get-image-cropped/{name}/{left}x{top}/{level}")
+    Call<ResponseBody> getImageCroppedTile(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("level")int level);
 }
