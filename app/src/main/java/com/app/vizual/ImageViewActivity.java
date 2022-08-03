@@ -49,6 +49,8 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         //1504 2560
          */
 
+        /*
+
         //GetExtra per prendere il nome dell'immagine ed eseguire le API
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("currentSelection") != null) {
@@ -74,7 +76,8 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
             });
-        }
+        }*/
+        replaceFragment(new ZoomFragment());
 
         //click yo open the floating button menu
         binding.fabLogo.setOnClickListener(view -> {

@@ -54,6 +54,8 @@ public class ZoomFragment extends Fragment{
     private FragmentToActivity mCallback;
     private AlertDialog dialog;
     private NavigationView navMenu;
+    private Switch drawerSwitch;
+    private boolean flagSwitch = false;
     private boolean isMenuOpen = false;
     public static int left = 0, top = 0, level = 10;
 
@@ -72,8 +74,6 @@ public class ZoomFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_zoom, container, false);
         mCallback = (FragmentToActivity) getContext();
 
-
-
         subsamplingScaleImageView = view.findViewById(R.id.zoomImageView);
         subsamplingScaleImageView.setMaxScale(10.0f);
         CustomGlideApp glideApp = new CustomGlideApp();
@@ -83,6 +83,10 @@ public class ZoomFragment extends Fragment{
         fabOriginalImage = view.findViewById(R.id.fabOriginalImage);
         navMenu = view.findViewById(R.id.mDrawerLayout);
         navMenu.setItemIconTintList(null);
+        MenuItem menuItem = navMenu.getMenu().findItem(R.id.grayscale); // This is the menu item that contains your switch
+        drawerSwitch = (Switch) menuItem.getActionView();
+        drawerSwitch.setClickable(false);
+
 
         itemSelected();
 
@@ -90,6 +94,7 @@ public class ZoomFragment extends Fragment{
         clickOpenMenu();
         //clickGetImageResized();
         setProgressDialog();
+        switchClicked();
 
         return view;
     }
@@ -155,6 +160,21 @@ public class ZoomFragment extends Fragment{
         }
     }
 
+    private void switchClicked(){
+        drawerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    //passi grayscale
+                    Toast.makeText(getActivity(), "Switch turned on", Toast.LENGTH_SHORT).show();
+                } else {
+                    //ripassi l'originale
+                    Toast.makeText(getActivity(), "Switch turned off", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void itemClickedMenu(int id){
         switch (id){
             case R.id.originalButton:
@@ -166,20 +186,16 @@ public class ZoomFragment extends Fragment{
                 break;
             case R.id.grayscale:
                 //passa grayscale
-                MenuItem menuItem = navMenu.getMenu().findItem(R.id.grayscale); // This is the menu item that contains your switch
-                Switch drawerSwitch = (Switch) menuItem.getActionView();
-                drawerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            //passi grayscale
-                            Toast.makeText(getActivity(), "Switch turned on", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //ripassi l'originale
-                            Toast.makeText(getActivity(), "Switch turned off", Toast.LENGTH_SHORT).show();
-                        }
+                if(flagSwitch) {
+                    if (drawerSwitch.isChecked()) {
+                        drawerSwitch.setChecked(false);
+                        Toast.makeText(getActivity(), "Switch turned off", Toast.LENGTH_SHORT).show();
+                    } else {
+                        drawerSwitch.setChecked(true);
+                        Toast.makeText(getActivity(), "Switch turned on", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+                flagSwitch = true;
                 break;
         }
     }
@@ -188,7 +204,9 @@ public class ZoomFragment extends Fragment{
         fabPassImage.setOnClickListener(view -> {
             if (!isMenuOpen) {
                 showMenu();
-                itemClickedMenu(R.id.grayscale);
+                if(!flagSwitch) {
+                    itemClickedMenu(R.id.grayscale);
+                }
             } else {
                 closeMenu();
             }

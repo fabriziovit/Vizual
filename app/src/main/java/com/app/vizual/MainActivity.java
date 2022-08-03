@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        Intent intent = new Intent(MainActivity.this, ImageViewActivity.class);
+        startActivity(intent);
+
         Call<ListImages> call = apiService.getObjRetrofit().getImages();
         apiService.callRetrofit(call, response -> {
             if (response != null)
