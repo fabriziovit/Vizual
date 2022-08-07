@@ -1,5 +1,6 @@
 package com.app.vizual.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapRegionDecoder;
@@ -9,20 +10,26 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.app.vizual.CroppedImageViewActivity;
 import com.app.vizual.CustomGlideApp;
 import com.app.vizual.ImageViewActivity;
 import com.app.vizual.Interfaces.FragmentToActivity;
@@ -30,6 +37,7 @@ import com.app.vizual.R;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,18 +45,30 @@ import java.io.IOException;
 
 public class ZoomFragment extends Fragment{
     private Bitmap bm;
+    private String nameImage;
     private SubsamplingScaleImageView subsamplingScaleImageView;
-    private FloatingActionButton fabPassImage, fabZoom15, fabOriginalImage;
+    private FloatingActionButton fabPassImage;
     private FragmentToActivity mCallback;
     private AlertDialog dialog;
+    private NavigationView navMenu;
+    private boolean isMenuOpen = false;
     public static int left = 0, top = 0;
+    private boolean flag = false;
+    private Switch drawerSwitch;
 
     public ZoomFragment() {
         // Required empty public constructor
     }
 
-    public ZoomFragment(Bitmap bitmap) {
+    public ZoomFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
+        this.nameImage = nameImage;
+    }
+
+    public ZoomFragment(Bitmap bitmap, String nameImage, boolean bool) {
+        bm = bitmap;
+        this.nameImage = nameImage;
+        flag = bool;
     }
 
     @Override
@@ -58,68 +78,157 @@ public class ZoomFragment extends Fragment{
         mCallback = (FragmentToActivity) getContext();
 
         subsamplingScaleImageView = view.findViewById(R.id.zoomImageView);
+        subsamplingScaleImageView.setMaxScale(10.0f);
         CustomGlideApp glideApp = new CustomGlideApp();
         glideApp.init(getContext(), bm, subsamplingScaleImageView);
         fabPassImage = view.findViewById(R.id.fabPassImageZoomed);
-        fabZoom15 = view.findViewById(R.id.fabZoom15);
-        fabOriginalImage = view.findViewById(R.id.fabOriginalImage);
+        navMenu = view.findViewById(R.id.mDrawerLayout);
+        navMenu.setItemIconTintList(null);
+        MenuItem menuItem = navMenu.getMenu().findItem(R.id.grayscale); // This is the menu item that contains your switch
+        drawerSwitch = (Switch) menuItem.getActionView();
 
-        clickReset();
-        clickGetImageResized();
+        if(flag)
+            navMenu.getMenu().findItem(R.id.passImageZoomed).setVisible(false);//da provare
+
+        itemSelected();
+        clickOpenMenu();
         setProgressDialog();
-        //clickZoom15();
+        switchClicked();
 
         return view;
     }
 
     //get Image zoomed with screen size
-    private void clickGetImageResized() {
-        fabPassImage.setOnClickListener(view -> {
-            dialog.show();
-            new Handler(Looper.getMainLooper()).post(() -> {
-                PointF leftTopCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(0, 0));
-                PointF rightBottomCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(subsamplingScaleImageView.getWidth(), subsamplingScaleImageView.getHeight()));
-                RectF visibleRectF = new RectF(leftTopCoord.x, leftTopCoord.y, rightBottomCoord.x, rightBottomCoord.y);
-                final Rect visibleRect = new Rect();
-                visibleRectF.round(visibleRect);
-                left = visibleRect.left;
-                top = visibleRect.top;
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                byte[] bitmapdata = bos.toByteArray();
-                ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
-                BitmapRegionDecoder decoder = null;
-                try {
-                    decoder = BitmapRegionDecoder.newInstance(bs, false);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Bitmap visibleWallBitmap = decoder.decodeRegion(visibleRect, null);
-                bm = visibleWallBitmap;
-                subsamplingScaleImageView.setImage(ImageSource.bitmap(visibleWallBitmap));
-                dialog.cancel();
-                mCallback.communicate(visibleWallBitmap);
-            });
+    private void clickGetImageZoomed() {
+        dialog.show();
+        new Handler(Looper.getMainLooper()).post(() -> {
+            PointF leftTopCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(0, 0));
+            PointF rightBottomCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(subsamplingScaleImageView.getWidth(), subsamplingScaleImageView.getHeight()));
+            RectF visibleRectF = new RectF(leftTopCoord.x, leftTopCoord.y, rightBottomCoord.x, rightBottomCoord.y);
+            final Rect visibleRect = new Rect();
+            visibleRectF.round(visibleRect);
+            left = visibleRect.left;
+            top = visibleRect.top;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+            ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
+            BitmapRegionDecoder decoder = null;
+            try {
+                decoder = BitmapRegionDecoder.newInstance(bs, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap visibleWallBitmap = decoder.decodeRegion(visibleRect, null);
+            bm = visibleWallBitmap;
+            subsamplingScaleImageView.setImage(ImageSource.bitmap(visibleWallBitmap));
+            dialog.cancel();
+            mCallback.communicate(visibleWallBitmap);
         });
     }
 
-    //Da Fixare
     //Reset zoom and position in the image
-    private void clickReset() {
-        //Richiesta immagine 2.5x
-        fabOriginalImage.setOnClickListener(view -> {
-            subsamplingScaleImageView.setImage(ImageSource.cachedBitmap(ImageViewActivity.originalBitmap));
-            bm = ImageViewActivity.originalBitmap;
-            mCallback.communicate(ImageViewActivity.originalBitmap);
+    private void clickResetImage() {
+        subsamplingScaleImageView.setImage(ImageSource.cachedBitmap(ImageViewActivity.originalBitmap));
+        bm = ImageViewActivity.originalBitmap;
+        mCallback.communicate(ImageViewActivity.originalBitmap);
+    }
+
+    private void itemSelected(){
+        navMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                itemClickedMenu(item.getItemId());
+                return true;
+            }
         });
     }
 
-    //Vedere se tenere questo metodo/bottone
-    private void clickZoom15() {
-        //Richiesta immagine 1.5x
-        fabZoom15.setOnClickListener(view -> {
-            subsamplingScaleImageView.setMaxScale(1);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        navMenu.setCheckedItem(R.id.grayscale);
+        navMenu.getMenu().performIdentifierAction(R.id.grayscale, 0);
+        if (onOptionsItemSelected(item)) {
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void switchClicked(){
+        drawerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if(flag){
+                        //passing the cropped grayscaled image
+                        CustomGlideApp glideApp = new CustomGlideApp();
+                        glideApp.init(getContext(), CroppedImageViewActivity.croppedGrayscaledImage, subsamplingScaleImageView);
+                    }else{
+                        //passing the grayscaled image
+                        CustomGlideApp glideApp = new CustomGlideApp();
+                        glideApp.init(getContext(), ImageViewActivity.grayscaledImage, subsamplingScaleImageView);
+                    }
+                } else {
+                    //passing the image with original colors
+                    CustomGlideApp glideApp = new CustomGlideApp();
+                    glideApp.init(getContext(), bm, subsamplingScaleImageView);
+                }
+            }
         });
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    private void itemClickedMenu(int id){
+        switch (id){
+            case R.id.originalButton:
+                clickResetImage();
+                break;
+            case R.id.passImageZoomed:
+                clickGetImageZoomed();
+                navMenu.getMenu().findItem(R.id.grayscale).setEnabled(false);
+                drawerSwitch.setEnabled(false);
+                break;
+            case R.id.grayscale:
+                if(drawerSwitch.isChecked()){
+                    //passing the image with originals colors
+                    drawerSwitch.setChecked(false);
+                    CustomGlideApp glideApp = new CustomGlideApp();
+                    glideApp.init(getContext(), bm, subsamplingScaleImageView);
+                }else{
+                    drawerSwitch.setChecked(true);
+                    if(flag){
+                        //passing the cropped grayscale image
+                        CustomGlideApp glideApp = new CustomGlideApp();
+                        glideApp.init(getContext(), CroppedImageViewActivity.croppedGrayscaledImage, subsamplingScaleImageView);
+                    }else{
+                        //passing the grayscale image
+                        CustomGlideApp glideApp = new CustomGlideApp();
+                        glideApp.init(getContext(), ImageViewActivity.grayscaledImage, subsamplingScaleImageView);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void clickOpenMenu(){
+        fabPassImage.setOnClickListener(view -> {
+            if (!isMenuOpen) {
+                showMenu();
+            } else {
+                closeMenu();
+            }
+        });
+    }
+
+    private void showMenu(){
+        isMenuOpen = true;
+        navMenu.setVisibility(View.VISIBLE);
+    }
+
+    private void closeMenu(){
+        isMenuOpen = false;
+        navMenu.setVisibility(View.GONE);
     }
 
     public void setProgressDialog() {

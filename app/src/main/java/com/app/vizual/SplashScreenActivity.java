@@ -19,11 +19,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        Transizione(binding);
+        Transition(binding);
     }
 
-    public void Transizione(ActivitySplashScreenBinding binding){
-
+    //once the trnasition is done open the main activity to choose the image
+    public void Transition(ActivitySplashScreenBinding binding){
         binding.motionLayout.addTransitionListener(new MotionLayout.TransitionListener() {
             @Override
             public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) {

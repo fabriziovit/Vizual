@@ -25,6 +25,14 @@ public interface ApiInterface {
     Call<ResponseBody> getImage(@Field("name") String name);
 
     @Streaming
+    @GET("get-image-grayscale/{name}")
+    Call<ResponseBody> getImageGrayscaled(@Path("name") String name);
+
+    @Streaming
     @GET("get-image-cropped/{name}/{left}_{top}_{width}x{height}")
     Call<ResponseBody> getImageCropped(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("width")int width, @Path("height")int height);
+
+    @Streaming
+    @GET("get-image-cropped-grayscale/{name}/{left}_{top}_{width}x{height}")
+    Call<ResponseBody> getImageCroppedGrayscaled(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("width")int width, @Path("height")int height);
 }

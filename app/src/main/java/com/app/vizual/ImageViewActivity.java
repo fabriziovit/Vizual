@@ -33,6 +33,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
     private FragmentManager fragmentManager;
     public static Bitmap originalBitmap;
     private Bitmap bm;
+    public static Bitmap grayscaledImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +63,22 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 binding.progressBar.setVisibility(View.VISIBLE);
                 bm = BitmapFactory.decodeStream(response.byteStream());
                 originalBitmap = bm;
-                replaceFragment(new ZoomFragment(bm));
+                replaceFragment(new ZoomFragment(bm, currentSelection));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
             });
+
+            call = apiService.getObjRetrofit().getImageGrayscaled(currentSelection);
+            apiService.callRetrofit(call, response -> {
+                if (response == null) {
+                    Log.d("DEBUG", "response null");
+                    return;
+                }
+                grayscaledImage = BitmapFactory.decodeStream(response.byteStream());
+            });
         }
 
-        //click yo open the floating button menu
+        //click to open the floating button menu
         binding.fabLogo.setOnClickListener(view -> {
             if (!isFABOpen) {
                 showFABMenu();
@@ -85,9 +95,10 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
 
         //click to open fragment for the zoom of the image(the fragment starts when this activity is created)
         binding.fabZoom.setOnClickListener(view -> {
-            replaceFragment(new ZoomFragment(bm));
+            replaceFragment(new ZoomFragment(bm, currentSelection));
         });
 
+        //click to return to selection activity
         binding.fabHome.setOnClickListener(view -> {
             Intent intent = new Intent(ImageViewActivity.this, MainActivity.class);
             startActivity(intent);

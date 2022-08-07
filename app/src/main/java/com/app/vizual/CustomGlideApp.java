@@ -28,6 +28,8 @@ import okhttp3.Call;
 
 @GlideModule
 public class CustomGlideApp extends AppGlideModule {
+
+    //get bitmap and load it into the subsampling image view
     public void init(Context context, Bitmap bitmap, SubsamplingScaleImageView subsamplingScaleImageView){
         Glide.with(context).asBitmap().load(bitmap).into(new CustomTarget<Bitmap>() {
             @Override

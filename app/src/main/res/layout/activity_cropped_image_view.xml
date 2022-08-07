@@ -8,22 +8,35 @@
     tools:context=".ImageViewActivity"
     android:background="#FFFEEF">
 
+    <FrameLayout
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:outlineAmbientShadowColor="@color/colorPrimary"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_home"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="4dp"
         android:outlineAmbientShadowColor="@color/colorPrimary"
         app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_home"
+        app:srcCompat="@drawable/logo_small_cropped"
         app:tint="@color/white"
         tools:ignore="SpeakableTextPresentCheck" />
-
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-        android:id="@+id/zoomImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -32,30 +45,31 @@
         android:layout_gravity="center"
         app:layout_anchorGravity="center">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/colorPrimary"
-        android:indeterminateTintMode="src_atop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:fontFamily="@font/courgette"
-        android:text="Caricamento immagine. L'operazione potrebbe richiedere qualche minuto..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:fontFamily="@font/courgette"
+            android:text="Caricamento immagine. L'operazione potrebbe richiedere qualche minuto..."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        //api call to load the list of the image that are saved on the server
         Call<ListImages> call = apiService.getObjRetrofit().getImages();
         apiService.callRetrofit(call, response -> {
             if (response != null)
@@ -40,15 +41,10 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
             binding.categorieAuto.setAdapter(arrayAdapter);
         });
-
-          /*
-        imagesName = new ArrayList<>(Collections.singletonList(getResources().getString(R.string.no_image_available)));
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
-        binding.categorieAuto.setAdapter(arrayAdapter);
-         */
         btnPressed(binding);
     }
 
+    //when selected an image open the activity to display the image choosen
     public void btnPressed(ActivityMainBinding binding) {
         binding.mainActivityButton.setOnClickListener(view -> {
             String currentSelection = binding.categorieAuto.getText().toString();

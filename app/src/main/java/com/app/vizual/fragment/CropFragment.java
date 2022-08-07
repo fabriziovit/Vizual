@@ -1,15 +1,11 @@
 package com.app.vizual.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +14,9 @@ import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.CroppedImageViewActivity;
 import com.app.vizual.ImageViewActivity;
 import com.app.vizual.Interfaces.FragmentToActivity;
-import com.app.vizual.MainActivity;
 import com.app.vizual.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 
 public class CropFragment extends Fragment {
     private Bitmap bm;
@@ -39,6 +26,7 @@ public class CropFragment extends Fragment {
     private boolean isOverlayShowed = false;
     private FragmentToActivity mCallback;
     private ApiService apiService = new ApiService();
+    private boolean flag = false;
 
     public CropFragment() {
         // Required empty public constructor
@@ -46,6 +34,12 @@ public class CropFragment extends Fragment {
 
     public CropFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
+        this.nameImage = nameImage;
+    }
+
+    public CropFragment(Bitmap bmp, String nameImage, boolean bool){
+        flag = bool;
+        bm = bmp;
         this.nameImage = nameImage;
     }
 
@@ -62,6 +56,11 @@ public class CropFragment extends Fragment {
         cropImageView.setImageBitmap(bm);
         cropImageView.setShowCropOverlay(true);
         isOverlayShowed = true;
+        /*if(flag){
+            fabCancel.setVisibility(View.GONE);
+            cropImageView.setShowCropOverlay(false);
+            fabCancel.setVisibility(View.GONE);
+        }*/
 
         clickFabCrop();
         clickFabCancel();
@@ -69,6 +68,7 @@ public class CropFragment extends Fragment {
         return view;
     }
 
+    //set invisible the crop overlay
     private void clickFabCancel(){
         fabCancel.setOnClickListener(view -> {
             isOverlayShowed = false;
@@ -77,6 +77,7 @@ public class CropFragment extends Fragment {
         });
     }
 
+    //crop the image passing the coordinates for an api call
     private void clickFabCrop(){
         fabCrop.setOnClickListener(view -> {
             if(isOverlayShowed) {
@@ -84,16 +85,6 @@ public class CropFragment extends Fragment {
                 isOverlayShowed = false;
                 bm = cropImageView.getCroppedImage();
 
-                //Richiesta Api passandogli left = cropImageView.getCropRect().left+ visibleRect.left top= cropImageView.getCropRect().top+visibleRect.top
-                //width = cropImageView.getCropRect().width()  height = cropImageView.getCropRect().height()
-                //Creare nuova Activity/Fragment con il nuovo bitmap.
-                //Salvare il bitmap originale e creare un tasto per poterlo poi utilizzare nella imageview.
-                /*
-                Zoom: 336 0 2617  1488
-                CROP: 25 433 1466  893
-
-                left = 336+25  top= 0+433 w : 1466 h:893
-                 */
                 Intent intent = new Intent(getActivity(), CroppedImageViewActivity.class);
                 intent.putExtra("nameImage", nameImage);
                 intent.putExtra("left", cropImageView.getCropRect().left+ZoomFragment.left);
@@ -107,7 +98,7 @@ public class CropFragment extends Fragment {
         });
     }
 
-    //Da provare
+    //Reset Image if it was zoomed or cropped
     private void clickGetOriginal(){
         fabOriginalImage.setOnClickListener(view -> {
             bm = ImageViewActivity.originalBitmap;
