@@ -66,15 +66,14 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 replaceFragment(new ZoomFragment(bm, currentSelection));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
-            });
-
-            call = apiService.getObjRetrofit().getImageGrayscaled(currentSelection);
-            apiService.callRetrofit(call, response -> {
-                if (response == null) {
-                    Log.d("DEBUG", "response null");
-                    return;
-                }
-                grayscaledImage = BitmapFactory.decodeStream(response.byteStream());
+                Call<ResponseBody> callGray = apiService.getObjRetrofit().getImageGrayscaled(currentSelection);
+                apiService.callRetrofit(callGray, responseBody -> {
+                    if (responseBody == null) {
+                        Log.d("DEBUG", "response null");
+                        return;
+                    }
+                    grayscaledImage = BitmapFactory.decodeStream(responseBody.byteStream());
+                });
             });
         }
 

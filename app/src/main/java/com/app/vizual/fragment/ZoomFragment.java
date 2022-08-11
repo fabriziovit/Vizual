@@ -47,7 +47,7 @@ public class ZoomFragment extends Fragment{
     private Bitmap bm;
     private String nameImage;
     private SubsamplingScaleImageView subsamplingScaleImageView;
-    private FloatingActionButton fabPassImage;
+    private FloatingActionButton fabMenu;
     private FragmentToActivity mCallback;
     private AlertDialog dialog;
     private NavigationView navMenu;
@@ -81,7 +81,7 @@ public class ZoomFragment extends Fragment{
         subsamplingScaleImageView.setMaxScale(10.0f);
         CustomGlideApp glideApp = new CustomGlideApp();
         glideApp.init(getContext(), bm, subsamplingScaleImageView);
-        fabPassImage = view.findViewById(R.id.fabPassImageZoomed);
+        fabMenu = view.findViewById(R.id.fabMenu);
         navMenu = view.findViewById(R.id.mDrawerLayout);
         navMenu.setItemIconTintList(null);
         MenuItem menuItem = navMenu.getMenu().findItem(R.id.grayscale); // This is the menu item that contains your switch
@@ -212,11 +212,13 @@ public class ZoomFragment extends Fragment{
     }
 
     private void clickOpenMenu(){
-        fabPassImage.setOnClickListener(view -> {
+        fabMenu.setOnClickListener(view -> {
             if (!isMenuOpen) {
                 showMenu();
+                fabMenu.setImageResource(R.drawable.ic_close_menu_40dp);
             } else {
                 closeMenu();
+                fabMenu.setImageResource(R.drawable.ic_menu_40dp);
             }
         });
     }
@@ -224,6 +226,7 @@ public class ZoomFragment extends Fragment{
     private void showMenu(){
         isMenuOpen = true;
         navMenu.setVisibility(View.VISIBLE);
+
     }
 
     private void closeMenu(){

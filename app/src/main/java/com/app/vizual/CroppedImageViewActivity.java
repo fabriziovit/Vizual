@@ -69,15 +69,14 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
                     replaceFragment(new ZoomFragment(bmp, nameImage, true));//da provare
                     binding.progressBar.setVisibility(View.GONE);
                     binding.textView.setVisibility(View.GONE);
-                });
-
-                call = apiService.getObjRetrofit().getImageCroppedGrayscaled(nameImage, left, top, width, height);
-                apiService.callRetrofit(call, response -> {
-                    if (response == null) {
-                        Log.d("DEBUG", "response null");
-                        return;
-                    }
-                    croppedGrayscaledImage = BitmapFactory.decodeStream(response.byteStream());
+                    Call<ResponseBody> callGray = apiService.getObjRetrofit().getImageCroppedGrayscaled(nameImage, left, top, width, height);
+                    apiService.callRetrofit(callGray, responseBody -> {
+                        if (responseBody == null) {
+                            Log.d("DEBUG", "response null");
+                            return;
+                        }
+                        croppedGrayscaledImage = BitmapFactory.decodeStream(responseBody.byteStream());
+                    });
                 });
             });
         }
