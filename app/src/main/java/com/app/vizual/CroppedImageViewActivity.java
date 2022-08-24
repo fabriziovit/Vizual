@@ -44,12 +44,10 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("nameImage") != null) {
             nameImage = bundle.getString("nameImage");
-            level = bundle.getInt("level");
             left = bundle.getInt("left");
             top = bundle.getInt("top");
-            //width = bundle.getInt("width");
-            //height = bundle.getInt("height");
-            ZoomFragment.level += 1;
+            width = bundle.getInt("width");
+            height = bundle.getInt("height");
         }
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -59,25 +57,21 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
             StrictMode.setThreadPolicy(policy);
 
             new Handler(Looper.getMainLooper()).post(() -> {
-                Call<ResponseBody> call = apiService.getObjRetrofit().getImageCroppedTile(nameImage, left, top, level);
-                apiService.callRetrofit(call, response -> {
-                    if (response == null) {
-                        Log.d("DEBUG", "response null");
-                        return;
-                    }
+                Call<ResponseBody> call = apiService.getObjRetrofit().getImageCropped(nameImage, left, top, width, height);
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    apiService.callRetrofit(call, response -> {
+                        if (response == null) {
+                            Log.d("DEBUG", "response null");
+                            return;
+                        }
 
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                    bmp = BitmapFactory.decodeStream(response.byteStream());
-                    replaceFragment(new ZoomFragment(bmp, nameImage));
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.textView.setVisibility(View.GONE);
-                    /*
-                    CustomGlideApp glideApp = new CustomGlideApp();
-                    glideApp.init(this, bmp, binding.zoomImageView, true);
-                    //D/skia: libjpeg error 105 <  Ss=0, Se=63, Ah=0, Al=0> from Incomplete image data
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.textView.setVisibility(View.GONE);
-                     */
+                        binding.progressBar.setVisibility(View.VISIBLE);
+                        bmp = BitmapFactory.decodeStream(response.byteStream());
+                        System.out.println(ImageViewActivity.ratio);
+                        replaceFragment(new ZoomFragment(bmp, nameImage));
+                        binding.progressBar.setVisibility(View.GONE);
+                        binding.textView.setVisibility(View.GONE);
+                    });
                 });
             });
         }
@@ -100,7 +94,7 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
 
         //click to open fragment for the crop of the image
         binding.fabCrop.setOnClickListener(view -> {
-            replaceFragment(new CropFragment(bmp, nameImage, left, top));
+            replaceFragment(new CropFragment(bmp, nameImage, true));
         });
 
         //click to open fragment for the zoom of the image(the fragment starts when this activity is created)

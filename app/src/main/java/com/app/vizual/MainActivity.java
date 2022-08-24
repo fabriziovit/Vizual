@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityMainBinding;
+import com.app.vizual.fragment.CropFragment;
 import com.app.vizual.fragment.ZoomFragment;
 
 import java.util.ArrayList;
@@ -31,9 +32,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        Intent intent = new Intent(MainActivity.this, ImageViewActivity.class);
-        startActivity(intent);
+        CropFragment.left = 0;
+        CropFragment.top = 0;
 
         Call<ListImages> call = apiService.getObjRetrofit().getImages();
         apiService.callRetrofit(call, response -> {

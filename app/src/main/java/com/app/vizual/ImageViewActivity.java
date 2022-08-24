@@ -18,12 +18,17 @@ import android.util.Log;
 import android.view.View;
 
 import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.Models.IntegerModel;
+import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityImageViewBinding;
 import com.app.vizual.fragment.CropFragment;
 import com.app.vizual.fragment.ZoomFragment;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ImageViewActivity extends AppCompatActivity implements FragmentToActivity {
     private ActivityImageViewBinding binding;
@@ -33,6 +38,9 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
     private FragmentManager fragmentManager;
     public static Bitmap originalBitmap;
     private Bitmap bm;
+    public static int widthOriginal, heightOriginal;
+    public final static int maxHeight = 3007, maxWidth = 5120;
+    public static double ratio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,6 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         //1504 2560
          */
 
-        /*
 
         //GetExtra per prendere il nome dell'immagine ed eseguire le API
         Bundle bundle = getIntent().getExtras();
@@ -72,12 +79,31 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                 binding.progressBar.setVisibility(View.VISIBLE);
                 bm = BitmapFactory.decodeStream(response.byteStream());
                 originalBitmap = bm;
+                Call<IntegerModel> callWidth = apiService.getObjRetrofit().getWidth(currentSelection);
+                apiService.callRetrofit(callWidth, responseWidth ->{
+                    if (responseWidth == null) {
+                        Log.d("DEBUG", "response null");
+                        return;
+                    }
+                    widthOriginal = responseWidth.getData().get(0);
+                });
+                Call<IntegerModel> callHeight = apiService.getObjRetrofit().getHeight(currentSelection);
+                apiService.callRetrofit(callHeight, responseHeight -> {
+                    if (responseHeight == null) {
+                        Log.d("DEBUG", "response null");
+                        return;
+                    }
+                    heightOriginal = responseHeight.getData().get(0);
+                    if(heightOriginal != 0 && widthOriginal != 0) {
+                        ratio = (double)Math.max((double)heightOriginal / maxHeight, (double)widthOriginal / maxWidth);
+                    }
+                });
+
                 replaceFragment(new ZoomFragment(bm, currentSelection));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
             });
-        }*/
-        replaceFragment(new ZoomFragment());
+        }
 
         //click yo open the floating button menu
         binding.fabLogo.setOnClickListener(view -> {
