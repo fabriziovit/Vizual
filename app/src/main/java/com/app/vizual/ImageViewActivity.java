@@ -13,22 +13,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.StrictMode;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
 import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.Models.IntegerModel;
-import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityImageViewBinding;
 import com.app.vizual.fragment.CropFragment;
 import com.app.vizual.fragment.ZoomFragment;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ImageViewActivity extends AppCompatActivity implements FragmentToActivity {
     private ActivityImageViewBinding binding;
@@ -56,7 +51,6 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         displayMetrics.widthPixels);
         //1504 2560
          */
-
 
         //GetExtra per prendere il nome dell'immagine ed eseguire le API
         Bundle bundle = getIntent().getExtras();

@@ -78,6 +78,7 @@ public class CropFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CroppedImageViewActivity.class);
                 intent.putExtra("nameImage", nameImage);
 
+                /*
                 //da vedere se funziona
                 double ratioCrop = Math.max((double) cropImageView.getCropRect().width()*ImageViewActivity.ratio/ImageViewActivity.maxWidth,
                         (double) cropImageView.getCropRect().height()*ImageViewActivity.ratio/ ImageViewActivity.maxHeight);
@@ -87,7 +88,7 @@ public class CropFragment extends Fragment {
                 }else{
                     if(ImageViewActivity.ratio != 1)
                         ImageViewActivity.ratio = 1;
-                }
+                }*/
 
                 left = left+(int) Math.floor((cropImageView.getCropRect().left+ZoomFragment.left)*ImageViewActivity.ratio);
                 top = top+(int) Math.floor((cropImageView.getCropRect().top+ZoomFragment.top)*ImageViewActivity.ratio);
@@ -96,7 +97,7 @@ public class CropFragment extends Fragment {
                 intent.putExtra("width",  (int)Math.floor(cropImageView.getCropRect().width()*ImageViewActivity.ratio));//viene preso il width e l'height dell'immagine passata quindi se viene passata
                 intent.putExtra("height", (int)Math.floor(cropImageView.getCropRect().height()*ImageViewActivity.ratio));
 
-                /*double ratioCrop = Math.max((double) cropImageView.getCropRect().width()*ImageViewActivity.ratio/ImageViewActivity.maxWidth,
+                double ratioCrop = Math.max((double) cropImageView.getCropRect().width()*ImageViewActivity.ratio/ImageViewActivity.maxWidth,
                         (double) cropImageView.getCropRect().height()*ImageViewActivity.ratio/ ImageViewActivity.maxHeight);
 
                 //capire funzionamento quando l'immagine è più piccola del ratio
@@ -105,7 +106,7 @@ public class CropFragment extends Fragment {
                 }else{
                     if(ImageViewActivity.ratio != 1)
                         ImageViewActivity.ratio = 1;
-                }*/
+                }
                 startActivity(intent);
             }
             isOverlayShowed = true;

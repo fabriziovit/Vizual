@@ -28,7 +28,7 @@ import retrofit2.Call;
 public class CroppedImageViewActivity extends AppCompatActivity implements FragmentToActivity {
     private ApiService apiService = new ApiService();
     private ActivityCroppedImageViewBinding binding;
-    private int left, top, width, height, level;
+    private int left, top, width, height;
     private String nameImage;
     private Bitmap bmp;
     private boolean isFABOpen = false;
