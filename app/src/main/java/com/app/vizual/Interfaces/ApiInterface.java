@@ -1,5 +1,6 @@
 package com.app.vizual.Interfaces;
 
+import com.app.vizual.Models.IntegerModel;
 import com.app.vizual.Models.ListImages;
 
 import java.util.List;
@@ -35,4 +36,10 @@ public interface ApiInterface {
     @Streaming
     @GET("get-image-cropped-grayscale/{name}/{left}_{top}_{width}x{height}")
     Call<ResponseBody> getImageCroppedGrayscaled(@Path("name")String name, @Path("left")int left, @Path("top") int top, @Path("width")int width, @Path("height")int height);
+
+    @GET("get-image-width/{name}")
+    Call<IntegerModel> getWidth(@Path("name")String name);
+
+    @GET("get-image-height/{name}")
+    Call<IntegerModel> getHeight(@Path("name")String name);
 }

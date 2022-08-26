@@ -12,11 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 
 import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.Models.IntegerModel;
 import com.app.vizual.databinding.ActivityImageViewBinding;
 import com.app.vizual.fragment.CropFragment;
 import com.app.vizual.fragment.ZoomFragment;
@@ -29,11 +32,13 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
     private ApiService apiService = new ApiService();
     private String currentSelection;
     private boolean isFABOpen = false;
-    private boolean isCropDisabled = false;
     private FragmentManager fragmentManager;
     public static Bitmap originalBitmap;
     private Bitmap bm;
     public static Bitmap grayscaledImage;
+    public static int widthOriginal, heightOriginal;
+    public final static int maxHeight = 3007, maxWidth = 5120;
+    public static double ratio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +61,39 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
             StrictMode.setThreadPolicy(policy);
             Call<ResponseBody> call = apiService.getObjRetrofit().getImage(currentSelection);
             apiService.callRetrofit(call, response -> {
-                if (response == null) {
-                    Log.d("DEBUG", "response null");
-                    return;
+                if (response != null) {
+                    bm = BitmapFactory.decodeStream(response.byteStream());
+                    originalBitmap = bm;
                 }
-                binding.progressBar.setVisibility(View.VISIBLE);
-                bm = BitmapFactory.decodeStream(response.byteStream());
-                originalBitmap = bm;
+                //binding.progressBar.setVisibility(View.VISIBLE);
+                Call<IntegerModel> callWidth = apiService.getObjRetrofit().getWidth(currentSelection);
+                apiService.callRetrofit(callWidth, responseWidth ->{
+                    if (responseWidth != null) {
+                        widthOriginal = responseWidth.getData().get(0);
+                        Call<IntegerModel> callHeight = apiService.getObjRetrofit().getHeight(currentSelection);
+                        apiService.callRetrofit(callHeight, responseHeight -> {
+                            if (responseHeight != null) {
+                                heightOriginal = responseHeight.getData().get(0);
+                                System.out.println(heightOriginal+"   "+widthOriginal);
+                                if(heightOriginal != 0 && widthOriginal != 0)
+                                    ratio = (double)Math.max((double)heightOriginal / maxHeight, (double)widthOriginal / maxWidth);
+                            }
+                        });
+                    }
+                });
+                new Handler(Looper.getMainLooper()).post(() -> {
+                            Call<ResponseBody> callGray = apiService.getObjRetrofit().getImageGrayscaled(currentSelection);
+                            apiService.callRetrofit(callGray, responseBody -> {
+                                if (responseBody == null) {
+                                    Log.d("DEBUG", "response null");
+                                    return;
+                                }
+                                grayscaledImage = BitmapFactory.decodeStream(responseBody.byteStream());
+                            });
+                        });
                 replaceFragment(new ZoomFragment(bm, currentSelection));
                 binding.progressBar.setVisibility(View.GONE);
                 binding.textView.setVisibility(View.GONE);
-                Call<ResponseBody> callGray = apiService.getObjRetrofit().getImageGrayscaled(currentSelection);
-                apiService.callRetrofit(callGray, responseBody -> {
-                    if (responseBody == null) {
-                        Log.d("DEBUG", "response null");
-                        return;
-                    }
-                    grayscaledImage = BitmapFactory.decodeStream(responseBody.byteStream());
-                });
             });
         }
 

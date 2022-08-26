@@ -84,11 +84,12 @@ public class ZoomFragment extends Fragment{
         fabMenu = view.findViewById(R.id.fabMenu);
         navMenu = view.findViewById(R.id.mDrawerLayout);
         navMenu.setItemIconTintList(null);
-        MenuItem menuItem = navMenu.getMenu().findItem(R.id.grayscale); // This is the menu item that contains your switch
+        MenuItem menuItem = navMenu.getMenu().findItem(R.id.grayscale); // This is the menu item that contains the switch
         drawerSwitch = (Switch) menuItem.getActionView();
 
+        //if the fragment is in the crop activity pass zoomed image can't be clicked
         if(flag)
-            navMenu.getMenu().findItem(R.id.passImageZoomed).setVisible(false);//da provare
+            navMenu.getMenu().findItem(R.id.passImageZoomed).setVisible(false);
 
         itemSelected();
         clickOpenMenu();

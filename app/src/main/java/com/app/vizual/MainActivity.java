@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityMainBinding;
+import com.app.vizual.fragment.CropFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        CropFragment.left = 0;
+        CropFragment.top = 0;
 
         //api call to load the list of the image that are saved on the server
         Call<ListImages> call = apiService.getObjRetrofit().getImages();

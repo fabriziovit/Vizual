@@ -25,8 +25,7 @@ public class CropFragment extends Fragment {
     private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
     private boolean isOverlayShowed = false;
     private FragmentToActivity mCallback;
-    private ApiService apiService = new ApiService();
-    private boolean flag = false;
+    public static int left = 0, top = 0;
 
     public CropFragment() {
         // Required empty public constructor
@@ -34,12 +33,6 @@ public class CropFragment extends Fragment {
 
     public CropFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
-        this.nameImage = nameImage;
-    }
-
-    public CropFragment(Bitmap bmp, String nameImage, boolean bool){
-        flag = bool;
-        bm = bmp;
         this.nameImage = nameImage;
     }
 
@@ -56,11 +49,6 @@ public class CropFragment extends Fragment {
         cropImageView.setImageBitmap(bm);
         cropImageView.setShowCropOverlay(true);
         isOverlayShowed = true;
-        /*if(flag){
-            fabCancel.setVisibility(View.GONE);
-            cropImageView.setShowCropOverlay(false);
-            fabCancel.setVisibility(View.GONE);
-        }*/
 
         clickFabCrop();
         clickFabCancel();
@@ -73,7 +61,6 @@ public class CropFragment extends Fragment {
         fabCancel.setOnClickListener(view -> {
             isOverlayShowed = false;
             cropImageView.setShowCropOverlay(false);
-
         });
     }
 
@@ -87,10 +74,23 @@ public class CropFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), CroppedImageViewActivity.class);
                 intent.putExtra("nameImage", nameImage);
-                intent.putExtra("left", cropImageView.getCropRect().left+ZoomFragment.left);
-                intent.putExtra("top", cropImageView.getCropRect().top+ZoomFragment.top);
-                intent.putExtra("width", cropImageView.getCropRect().width());
-                intent.putExtra("height", cropImageView.getCropRect().height());
+                left = left+(int) Math.floor((cropImageView.getCropRect().left+ZoomFragment.left)*ImageViewActivity.ratio);
+                top = top+(int) Math.floor((cropImageView.getCropRect().top+ZoomFragment.top)*ImageViewActivity.ratio);
+                intent.putExtra("left", left);
+                intent.putExtra("top", top);
+                intent.putExtra("width",  (int)Math.floor(cropImageView.getCropRect().width()*ImageViewActivity.ratio));//viene preso il width e l'height dell'immagine passata quindi se viene passata
+                intent.putExtra("height", (int)Math.floor(cropImageView.getCropRect().height()*ImageViewActivity.ratio));
+
+                double ratioCrop = Math.max((double) cropImageView.getCropRect().width()*ImageViewActivity.ratio/ImageViewActivity.maxWidth,
+                        (double) cropImageView.getCropRect().height()*ImageViewActivity.ratio/ ImageViewActivity.maxHeight);
+
+                //capire funzionamento quando l'immagine è più piccola del ratio
+                if(ratioCrop > 1){
+                    ImageViewActivity.ratio = ratioCrop;
+                }else{
+                    if(ImageViewActivity.ratio != 1)
+                        ImageViewActivity.ratio = 1;
+                }
                 startActivity(intent);
             }
             isOverlayShowed = true;
