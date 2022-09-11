@@ -12,15 +12,15 @@ import android.widget.Toast;
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
 import com.app.vizual.databinding.ActivityMainBinding;
-import com.app.vizual.fragment.CropFragment;
-import com.app.vizual.fragment.ZoomFragment;
+import com.app.vizual.Fragment.CropFragment;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import retrofit2.Call;
 
-public class MainActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static ActivityMainBinding binding;
     private ArrayList<String> imagesName;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             if (!currentSelection.equals(getResources().getString(R.string.no_image_available)) &&
                     !currentSelection.equals(getResources().getString(R.string.choose_image))) {
 
-                Intent intent = new Intent(MainActivity.this, ImageViewActivity.class);
+                Intent intent = new Intent(HomePageActivity.this, ImageViewActivity.class);
                 intent.putExtra("currentSelection", currentSelection);
                 startActivity(intent);
             }else

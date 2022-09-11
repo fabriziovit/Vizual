@@ -1,4 +1,4 @@
-package com.app.vizual.fragment;
+package com.app.vizual.Fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

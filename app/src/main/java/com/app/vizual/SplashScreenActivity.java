@@ -37,7 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onTransitionCompleted(MotionLayout motionLayout, int i) {
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                 startActivity(intent);
                 finish();
             }

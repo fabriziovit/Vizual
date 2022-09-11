@@ -18,8 +18,8 @@ import android.view.View;
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.databinding.ActivityCroppedImageViewBinding;
-import com.app.vizual.fragment.CropFragment;
-import com.app.vizual.fragment.ZoomFragment;
+import com.app.vizual.Fragment.CropFragment;
+import com.app.vizual.Fragment.ZoomFragment;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -77,7 +77,7 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
         }
 
         binding.fabHome.setOnClickListener(view -> {
-            Intent intent = new Intent(CroppedImageViewActivity.this, MainActivity.class);
+            Intent intent = new Intent(CroppedImageViewActivity.this, HomePageActivity.class);
             startActivity(intent);
             finish();
         });
@@ -103,7 +103,7 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
         });
 
         binding.fabHome.setOnClickListener(view -> {
-            Intent intent = new Intent(CroppedImageViewActivity.this, MainActivity.class);
+            Intent intent = new Intent(CroppedImageViewActivity.this, HomePageActivity.class);
             startActivity(intent);
             finish();
         });

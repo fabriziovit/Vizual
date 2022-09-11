@@ -19,8 +19,8 @@ import android.view.View;
 import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.Models.IntegerModel;
 import com.app.vizual.databinding.ActivityImageViewBinding;
-import com.app.vizual.fragment.CropFragment;
-import com.app.vizual.fragment.ZoomFragment;
+import com.app.vizual.Fragment.CropFragment;
+import com.app.vizual.Fragment.ZoomFragment;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -120,7 +120,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         });
 
         binding.fabHome.setOnClickListener(view -> {
-            Intent intent = new Intent(ImageViewActivity.this, MainActivity.class);
+            Intent intent = new Intent(ImageViewActivity.this, HomePageActivity.class);
             startActivity(intent);
             finish();
         });
