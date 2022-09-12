@@ -3,6 +3,7 @@ package com.app.vizual;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
+import com.app.vizual.Presenters.HomePagePresenter;
 import com.app.vizual.databinding.ActivityMainBinding;
 import com.app.vizual.Fragment.CropFragment;
 
@@ -25,12 +27,15 @@ public class HomePageActivity extends AppCompatActivity {
     public static ActivityMainBinding binding;
     private ArrayList<String> imagesName;
     private ApiService apiService = new ApiService();
+    private HomePagePresenter homePagePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        homePagePresenter = new HomePagePresenter(this);
+
         setContentView(view);
         CropFragment.left = 0;
         CropFragment.top = 0;
@@ -44,20 +49,10 @@ public class HomePageActivity extends AppCompatActivity {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
             binding.categorieAuto.setAdapter(arrayAdapter);
         });
-        btnPressed(binding);
+        homePagePresenter.buttonPressed(binding);
     }
 
-    public void btnPressed(ActivityMainBinding binding) {
-        binding.mainActivityButton.setOnClickListener(view -> {
-            String currentSelection = binding.categorieAuto.getText().toString();
-            if (!currentSelection.equals(getResources().getString(R.string.no_image_available)) &&
-                    !currentSelection.equals(getResources().getString(R.string.choose_image))) {
-
-                Intent intent = new Intent(HomePageActivity.this, ImageViewActivity.class);
-                intent.putExtra("currentSelection", currentSelection);
-                startActivity(intent);
-            }else
-                Toast.makeText(getApplicationContext(), "Scegli un immagine!", Toast.LENGTH_SHORT).show();
-        });
+    public Activity getStartActivity(){
+        return this;
     }
 }

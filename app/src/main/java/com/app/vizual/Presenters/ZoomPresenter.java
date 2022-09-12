@@ -1,4 +1,4 @@
 package com.app.vizual.Presenters;
 
-public class ZoomFragment {
+public class ZoomPresenter {
 }

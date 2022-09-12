@@ -1,11 +1,8 @@
 package com.app.vizual;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,8 +14,8 @@ import android.view.View;
 
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.Presenters.CroppedImagePresenter;
 import com.app.vizual.databinding.ActivityCroppedImageViewBinding;
-import com.app.vizual.Fragment.CropFragment;
 import com.app.vizual.Fragment.ZoomFragment;
 
 import okhttp3.ResponseBody;
@@ -32,14 +29,15 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
     private String nameImage;
     private Bitmap bmp;
     private boolean isFABOpen = false;
-    private FragmentManager fragmentManager;
+    private CroppedImagePresenter croppedImagePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityCroppedImageViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        croppedImagePresenter = new CroppedImagePresenter(this);
+
         //GetExtra per prendere i dati per eseguire la chimata API
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("nameImage") != null) {
@@ -67,8 +65,7 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
 
                         binding.progressBar.setVisibility(View.VISIBLE);
                         bmp = BitmapFactory.decodeStream(response.byteStream());
-                        System.out.println(ImageViewActivity.ratio);
-                        replaceFragment(new ZoomFragment(bmp, nameImage));
+                        croppedImagePresenter.replaceFragment(new ZoomFragment(bmp, nameImage), binding);
                         binding.progressBar.setVisibility(View.GONE);
                         binding.textView.setVisibility(View.GONE);
                     });
@@ -76,64 +73,14 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
             });
         }
 
-        binding.fabHome.setOnClickListener(view -> {
-            Intent intent = new Intent(CroppedImageViewActivity.this, HomePageActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-
-        //click yo open the floating button menu
-        binding.fabLogo.setOnClickListener(view -> {
-            if (!isFABOpen) {
-                showFABMenu();
-            } else {
-                closeFABMenu();
-            }
-        });
-
-        //click to open fragment for the crop of the image
-        binding.fabCrop.setOnClickListener(view -> {
-            replaceFragment(new CropFragment(bmp, nameImage, true));
-        });
-
-        //click to open fragment for the zoom of the image(the fragment starts when this activity is created)
-        binding.fabZoom.setOnClickListener(view -> {
-            replaceFragment(new ZoomFragment(bmp, nameImage));
-        });
-
-        binding.fabHome.setOnClickListener(view -> {
-            Intent intent = new Intent(CroppedImageViewActivity.this, HomePageActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        croppedImagePresenter.clickLogoButton(binding);
+        croppedImagePresenter.clickHomeButton(binding);
+        croppedImagePresenter.clickCropButton(binding, nameImage, bmp);
+        croppedImagePresenter.clickZoomButton(binding, nameImage, bmp);
     }
 
-    private void showFABMenu() {
-        isFABOpen = true;
-        binding.fabZoom.setVisibility(View.VISIBLE);
-        binding.fabCrop.setVisibility(View.VISIBLE);
-        binding.fabHome.setVisibility(View.VISIBLE);
-        binding.fabZoom.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-        binding.fabCrop.animate().translationY(-getResources().getDimension(R.dimen.standard_100));
-        binding.fabHome.animate().translationY(-getResources().getDimension(R.dimen.standard_145));
-    }
-
-    private void closeFABMenu() {
-        isFABOpen = false;
-        binding.fabZoom.animate().translationY(0);
-        binding.fabCrop.animate().translationY(0);
-        binding.fabHome.animate().translationY(0);
-        binding.fabZoom.setVisibility(View.GONE);
-        binding.fabCrop.setVisibility(View.GONE);
-        binding.fabHome.setVisibility(View.GONE);
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(binding.frameContainer.getId(), fragment);
-        fragmentTransaction.commit();
+    public Activity getStartActivity(){
+        return this;
     }
 
     @Override
