@@ -28,7 +28,6 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
     private int left, top, width, height;
     private String nameImage;
     private Bitmap bmp;
-    private boolean isFABOpen = false;
     private CroppedImagePresenter croppedImagePresenter;
 
     @Override
@@ -62,7 +61,6 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
                             Log.d("DEBUG", "response null");
                             return;
                         }
-
                         binding.progressBar.setVisibility(View.VISIBLE);
                         bmp = BitmapFactory.decodeStream(response.byteStream());
                         croppedImagePresenter.replaceFragment(new ZoomFragment(bmp, nameImage), binding);

@@ -18,7 +18,6 @@ import com.app.vizual.databinding.ActivityCroppedImageViewBinding;
 public class CroppedImagePresenter {
     private final CroppedImageViewActivity croppedImageViewActivity;
     private boolean isFABOpen = false;
-    private FragmentManager fragmentManager;
 
     public CroppedImagePresenter(CroppedImageViewActivity croppedImageViewActivity) {
         this.croppedImageViewActivity = croppedImageViewActivity;
@@ -76,7 +75,7 @@ public class CroppedImagePresenter {
     }
 
     public void replaceFragment(Fragment fragment, ActivityCroppedImageViewBinding binding) {
-        fragmentManager = croppedImageViewActivity.getSupportFragmentManager();
+        FragmentManager fragmentManager = croppedImageViewActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(binding.frameContainer.getId(), fragment);
         fragmentTransaction.commit();
