@@ -4,8 +4,8 @@ import android.content.Intent;
 
 import androidx.constraintlayout.motion.widget.MotionLayout;
 
-import com.app.vizual.HomePageActivity;
-import com.app.vizual.SplashScreenActivity;
+import com.app.vizual.Views.HomePageActivity;
+import com.app.vizual.Views.SplashScreenActivity;
 import com.app.vizual.databinding.ActivitySplashScreenBinding;
 
 public class SplashScreenPresenter {

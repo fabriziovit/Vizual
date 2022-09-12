@@ -1,4 +1,4 @@
-package com.app.vizual;
+package com.app.vizual.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +27,7 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
     private ActivityCroppedImageViewBinding binding;
     private int left, top, width, height;
     private String nameImage;
-    private Bitmap bmp;
+    public static Bitmap bmp;
     private CroppedImagePresenter croppedImagePresenter;
 
     @Override
@@ -73,8 +73,8 @@ public class CroppedImageViewActivity extends AppCompatActivity implements Fragm
 
         croppedImagePresenter.clickLogoButton(binding);
         croppedImagePresenter.clickHomeButton(binding);
-        croppedImagePresenter.clickCropButton(binding, nameImage, bmp);
-        croppedImagePresenter.clickZoomButton(binding, nameImage, bmp);
+        croppedImagePresenter.clickCropButton(binding, nameImage);
+        croppedImagePresenter.clickZoomButton(binding, nameImage);
     }
 
     public Activity getStartActivity(){

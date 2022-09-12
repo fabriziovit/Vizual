@@ -1,14 +1,15 @@
 package com.app.vizual.Presenters;
 
+import static com.app.vizual.Views.CroppedImageViewActivity.bmp;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.app.vizual.CroppedImageViewActivity;
+import com.app.vizual.Views.CroppedImageViewActivity;
 import com.app.vizual.Fragment.CropFragment;
 import com.app.vizual.Fragment.ZoomFragment;
 import com.app.vizual.HomePageActivity;
@@ -42,13 +43,13 @@ public class CroppedImagePresenter {
         });
     }
 
-    public void clickCropButton(ActivityCroppedImageViewBinding binding, String nameImage, Bitmap bmp){
+    public void clickCropButton(ActivityCroppedImageViewBinding binding, String nameImage){
         binding.fabCrop.setOnClickListener(view -> {
             replaceFragment(new CropFragment(bmp, nameImage), binding);
         });
     }
 
-    public void clickZoomButton(ActivityCroppedImageViewBinding binding, String nameImage, Bitmap bmp){
+    public void clickZoomButton(ActivityCroppedImageViewBinding binding, String nameImage){
         binding.fabZoom.setOnClickListener(view -> {
             replaceFragment(new ZoomFragment(bmp, nameImage), binding);
         });

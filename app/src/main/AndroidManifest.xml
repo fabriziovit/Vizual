@@ -14,15 +14,15 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CroppedImageViewActivity"
+            android:name=".Views.CroppedImageViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ImageViewActivity"
+            android:name=".Views.ImageViewActivity"
             android:exported="false"
             android:label="@string/title_activity_image_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Views.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

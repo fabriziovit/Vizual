@@ -1,7 +1,8 @@
 package com.app.vizual.Presenters;
 
+import static com.app.vizual.Views.ImageViewActivity.bm;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -10,8 +11,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.vizual.Fragment.CropFragment;
 import com.app.vizual.Fragment.ZoomFragment;
-import com.app.vizual.HomePageActivity;
-import com.app.vizual.ImageViewActivity;
+import com.app.vizual.Views.HomePageActivity;
+import com.app.vizual.Views.ImageViewActivity;
 import com.app.vizual.R;
 import com.app.vizual.databinding.ActivityImageViewBinding;
 
@@ -41,13 +42,13 @@ public class ImageViewPresenter {
         });
     }
 
-    public void clickZoomButton(ActivityImageViewBinding binding, String currentSelection, Bitmap bm){
+    public void clickZoomButton(ActivityImageViewBinding binding, String currentSelection){
         binding.fabZoom.setOnClickListener(view -> {
             replaceFragment(new ZoomFragment(bm, currentSelection), binding);
         });
     }
 
-    public void clickCropButton(ActivityImageViewBinding binding, String currentSelection, Bitmap bm){
+    public void clickCropButton(ActivityImageViewBinding binding, String currentSelection){
         binding.fabCrop.setOnClickListener(view -> {
             replaceFragment(new CropFragment(bm, currentSelection), binding);
         });

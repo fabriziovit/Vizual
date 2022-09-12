@@ -3,8 +3,8 @@ package com.app.vizual.Presenters;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.app.vizual.HomePageActivity;
-import com.app.vizual.ImageViewActivity;
+import com.app.vizual.Views.HomePageActivity;
+import com.app.vizual.Views.ImageViewActivity;
 import com.app.vizual.R;
 import com.app.vizual.databinding.ActivityMainBinding;
 

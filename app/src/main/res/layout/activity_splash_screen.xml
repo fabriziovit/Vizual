@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/scene_splash_activity"
-    tools:context=".SplashScreenActivity"
+    tools:context=".Views.SplashScreenActivity"
     android:background="#FFFEEF"
     android:paddingTop="24dp">
 

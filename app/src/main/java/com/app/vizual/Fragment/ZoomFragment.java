@@ -65,9 +65,9 @@ public class ZoomFragment extends Fragment{
         drawerSwitch = (Switch) menuItem.getActionView();
         drawerSwitch.setClickable(false);
 
-        zoomPresenter.itemSelected(navMenu, drawerSwitch, subsamplingScaleImageView, mCallback);
+        zoomPresenter.itemSelected(navMenu, drawerSwitch, subsamplingScaleImageView);
 
-        zoomPresenter.clickOpenMenu(navMenu, fabMenuZoom, drawerSwitch, subsamplingScaleImageView, mCallback);
+        zoomPresenter.clickOpenMenu(navMenu, fabMenuZoom, drawerSwitch, subsamplingScaleImageView);
         zoomPresenter.setProgressDialog();
         zoomPresenter.switchClicked(drawerSwitch);
 

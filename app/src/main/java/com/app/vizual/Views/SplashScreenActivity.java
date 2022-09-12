@@ -1,4 +1,4 @@
-package com.app.vizual;
+package com.app.vizual.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 

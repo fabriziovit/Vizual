@@ -4,16 +4,16 @@ import static com.app.vizual.Fragment.CropFragment.bm;
 
 import android.content.Intent;
 
-import com.app.vizual.CroppedImageViewActivity;
+import com.app.vizual.Views.CroppedImageViewActivity;
 import com.app.vizual.Fragment.CropFragment;
 import com.app.vizual.Fragment.ZoomFragment;
-import com.app.vizual.ImageViewActivity;
-import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.Views.ImageViewActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class CropPresenter {
     private final CropFragment cropFragment;
+    public static double ratioCrop;
 
     public CropPresenter(CropFragment cropFragment) {
         this.cropFragment = cropFragment;
@@ -40,7 +40,7 @@ public class CropPresenter {
                 intent.putExtra("width",  (int)Math.floor(cropImageView.getCropRect().width()*ImageViewActivity.ratio));//viene preso il width e l'height dell'immagine passata quindi se viene passata
                 intent.putExtra("height", (int)Math.floor(cropImageView.getCropRect().height()*ImageViewActivity.ratio));
 
-                double ratioCrop = Math.max((double) cropImageView.getCropRect().width()*ImageViewActivity.ratio/ImageViewActivity.maxWidth,
+                ratioCrop = Math.max((double) cropImageView.getCropRect().width()*ImageViewActivity.ratio/ImageViewActivity.maxWidth,
                         (double) cropImageView.getCropRect().height()*ImageViewActivity.ratio/ ImageViewActivity.maxHeight);
 
                 if(ratioCrop > 1){
@@ -56,11 +56,16 @@ public class CropPresenter {
         });
     }
 
-    public void clickGetOriginal(FloatingActionButton fabOriginalImage, CropImageView cropImageView, FragmentToActivity mCallback){
+    public void clickGetOriginal(FloatingActionButton fabOriginalImage, CropImageView cropImageView){
         fabOriginalImage.setOnClickListener(view -> {
             bm = ImageViewActivity.originalBitmap;
+            CropFragment.left = 0;
+            CropFragment.top = 0;
+            ImageViewActivity.ratio = ImageViewActivity.originalRatio;
             cropImageView.setImageBitmap(bm);
-            mCallback.communicate(bm);
+            ImageViewActivity.bm = ImageViewActivity.originalBitmap;
+            ZoomFragment.bm = ImageViewActivity.originalBitmap;
+            CroppedImageViewActivity.bmp = ImageViewActivity.originalBitmap;
         });
     }
 }

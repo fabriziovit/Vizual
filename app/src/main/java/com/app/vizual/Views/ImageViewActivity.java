@@ -1,4 +1,4 @@
-package com.app.vizual;
+package com.app.vizual.Views;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -28,10 +28,11 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
     private String currentSelection;
     private boolean isFABOpen = false;
     public static Bitmap originalBitmap;
-    private Bitmap bm;
+    public static Bitmap bm;
     public static int widthOriginal, heightOriginal;
     public final static int maxHeight = 3007, maxWidth = 5120;
     public static double ratio;
+    public static double originalRatio;
     private ImageViewPresenter imageViewPresenter;
 
     @Override
@@ -63,30 +64,25 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
             StrictMode.setThreadPolicy(policy);
             Call<ResponseBody> call = apiService.getObjRetrofit().getImage(currentSelection);
             apiService.callRetrofit(call, response -> {
-                if (response == null) {
-                    Log.d("DEBUG", "response null");
-                    return;
+                if (response != null) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    bm = BitmapFactory.decodeStream(response.byteStream());
+                    originalBitmap = bm;
                 }
-                binding.progressBar.setVisibility(View.VISIBLE);
-                bm = BitmapFactory.decodeStream(response.byteStream());
-                originalBitmap = bm;
                 Call<IntegerModel> callWidth = apiService.getObjRetrofit().getWidth(currentSelection);
                 apiService.callRetrofit(callWidth, responseWidth ->{
-                    if (responseWidth == null) {
-                        Log.d("DEBUG", "response null");
-                        return;
-                    }
-                    widthOriginal = responseWidth.getData().get(0);
-                });
-                Call<IntegerModel> callHeight = apiService.getObjRetrofit().getHeight(currentSelection);
-                apiService.callRetrofit(callHeight, responseHeight -> {
-                    if (responseHeight == null) {
-                        Log.d("DEBUG", "response null");
-                        return;
-                    }
-                    heightOriginal = responseHeight.getData().get(0);
-                    if(heightOriginal != 0 && widthOriginal != 0) {
-                        ratio = (double)Math.max((double)heightOriginal / maxHeight, (double)widthOriginal / maxWidth);
+                    if (responseWidth != null) {
+                        widthOriginal = responseWidth.getData().get(0);
+                        Call<IntegerModel> callHeight = apiService.getObjRetrofit().getHeight(currentSelection);
+                        apiService.callRetrofit(callHeight, responseHeight -> {
+                            if (responseHeight != null) {
+                                heightOriginal = responseHeight.getData().get(0);
+                                if(heightOriginal != 0 && widthOriginal != 0) {
+                                    ratio = (double)Math.max((double)heightOriginal / maxHeight, (double)widthOriginal / maxWidth);
+                                    originalRatio = (double)Math.max((double)heightOriginal / maxHeight, (double)widthOriginal / maxWidth);
+                                }
+                            }
+                        });
                     }
                 });
 
@@ -97,8 +93,8 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         }
 
         imageViewPresenter.clickLogoButton(binding);
-        imageViewPresenter.clickCropButton(binding, currentSelection, bm);
-        imageViewPresenter.clickZoomButton(binding, currentSelection, bm);
+        imageViewPresenter.clickCropButton(binding, currentSelection);
+        imageViewPresenter.clickZoomButton(binding, currentSelection);
         imageViewPresenter.clickHomeButton(binding);
     }
 

@@ -47,7 +47,7 @@ public class CropFragment extends Fragment {
 
         cropPresenter.clickFabCancel(fabCancel, cropImageView);
         cropPresenter.clickFabCrop(fabCrop, cropImageView, nameImage);
-        cropPresenter.clickGetOriginal(fabOriginalImage, cropImageView, mCallback);
+        cropPresenter.clickGetOriginal(fabOriginalImage, cropImageView);
         return view;
     }
 }

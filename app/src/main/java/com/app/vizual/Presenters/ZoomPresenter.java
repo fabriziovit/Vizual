@@ -24,9 +24,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.app.vizual.Views.CroppedImageViewActivity;
+import com.app.vizual.Fragment.CropFragment;
 import com.app.vizual.Fragment.ZoomFragment;
-import com.app.vizual.ImageViewActivity;
-import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.Views.ImageViewActivity;
 import com.app.vizual.R;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -47,7 +48,7 @@ public class ZoomPresenter {
         this.zoomFragment = zoomFragment;
     }
 
-    private void clickGetImageResized(SubsamplingScaleImageView subsamplingScaleImageView, FragmentToActivity mCallback) {
+    private void clickGetImageResized(SubsamplingScaleImageView subsamplingScaleImageView) {
         dialog.show();
         new Handler(Looper.getMainLooper()).post(() -> {
             PointF leftTopCoord = subsamplingScaleImageView.viewToSourceCoord(new PointF(0, 0));
@@ -71,21 +72,23 @@ public class ZoomPresenter {
             ZoomFragment.bm = visibleWallBitmap;
             subsamplingScaleImageView.setImage(ImageSource.bitmap(visibleWallBitmap));
             dialog.cancel();
-            mCallback.communicate(visibleWallBitmap);
+            ImageViewActivity.bm = visibleWallBitmap;
         });
     }
 
-    private void clickReset(SubsamplingScaleImageView subsamplingScaleImageView, FragmentToActivity mCallback) {
+    private void clickReset(SubsamplingScaleImageView subsamplingScaleImageView) {
         subsamplingScaleImageView.setImage(ImageSource.cachedBitmap(ImageViewActivity.originalBitmap));
         ZoomFragment.bm = ImageViewActivity.originalBitmap;
-        mCallback.communicate(ImageViewActivity.originalBitmap);
+        ImageViewActivity.bm = ImageViewActivity.originalBitmap;
+        CropFragment.bm = ImageViewActivity.originalBitmap;
+        CroppedImageViewActivity.bmp = ImageViewActivity.originalBitmap;
     }
 
-    public void itemSelected(NavigationView navMenu, Switch drawerSwitch, SubsamplingScaleImageView subsamplingScaleImageView, FragmentToActivity mCallback){
+    public void itemSelected(NavigationView navMenu, Switch drawerSwitch, SubsamplingScaleImageView subsamplingScaleImageView){
         navMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                itemClickedMenu(item.getItemId(), drawerSwitch,  subsamplingScaleImageView, mCallback);
+                itemClickedMenu(item.getItemId(), drawerSwitch,  subsamplingScaleImageView);
                 return true;
             }
         });
@@ -106,13 +109,18 @@ public class ZoomPresenter {
         });
     }
 
-    private void itemClickedMenu(int id, Switch drawerSwitch, SubsamplingScaleImageView subsamplingScaleImageView, FragmentToActivity mCallback){
+    private void itemClickedMenu(int id, Switch drawerSwitch, SubsamplingScaleImageView subsamplingScaleImageView){
         switch (id){
             case R.id.originalButton:
-                clickReset(subsamplingScaleImageView, mCallback);
+                clickReset(subsamplingScaleImageView);
+                CropFragment.left = 0;
+                CropFragment.top = 0;
+                ImageViewActivity.ratio = ImageViewActivity.originalRatio;
+
+                System.out.println(CropPresenter.ratioCrop);
                 break;
             case R.id.passImageZoomed:
-                clickGetImageResized(subsamplingScaleImageView, mCallback);
+                clickGetImageResized(subsamplingScaleImageView);
                 Toast.makeText(zoomFragment.getActivity(), "Switch turned on", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.grayscale:
@@ -131,12 +139,12 @@ public class ZoomPresenter {
         }
     }
 
-    public void clickOpenMenu(NavigationView navMenu, FloatingActionButton fabMenuZoom, Switch drawerSwitch, SubsamplingScaleImageView subsamplingScaleImageView, FragmentToActivity mCallback){
+    public void clickOpenMenu(NavigationView navMenu, FloatingActionButton fabMenuZoom, Switch drawerSwitch, SubsamplingScaleImageView subsamplingScaleImageView){
         fabMenuZoom.setOnClickListener(view -> {
             if (!isMenuOpen) {
                 showMenu(navMenu);
                 if(!flagSwitch) {
-                    itemClickedMenu(R.id.grayscale, drawerSwitch, subsamplingScaleImageView, mCallback);
+                    itemClickedMenu(R.id.grayscale, drawerSwitch, subsamplingScaleImageView);
                 }
             } else {
                 closeMenu(navMenu);

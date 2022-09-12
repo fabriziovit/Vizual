@@ -1,4 +1,4 @@
-package com.app.vizual;
+package com.app.vizual.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,9 +13,9 @@ import android.widget.Toast;
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
 import com.app.vizual.Presenters.HomePagePresenter;
+import com.app.vizual.R;
 import com.app.vizual.databinding.ActivityMainBinding;
 import com.app.vizual.Fragment.CropFragment;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
