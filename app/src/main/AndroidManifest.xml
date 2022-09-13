@@ -17,15 +17,15 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CroppedImageViewActivity"
+            android:name=".Views.CroppedImageViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ImageViewActivity"
+            android:name=".Views.ImageViewActivity"
             android:exported="false"
             android:label="@string/title_activity_image_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Views.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Views.HomePageActivity" />
         <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"> </uses-library>
     </application>
 

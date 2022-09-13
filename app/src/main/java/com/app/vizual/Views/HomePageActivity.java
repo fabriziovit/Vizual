@@ -1,33 +1,34 @@
-package com.app.vizual;
+package com.app.vizual.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.app.vizual.APIResponse.ApiService;
 import com.app.vizual.Models.ListImages;
+import com.app.vizual.Presenters.HomePagePresenter;
+import com.app.vizual.R;
 import com.app.vizual.databinding.ActivityMainBinding;
-import com.app.vizual.fragment.CropFragment;
+import com.app.vizual.Fragment.CropFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import retrofit2.Call;
 
-public class MainActivity extends AppCompatActivity {
-    @SuppressLint("StaticFieldLeak")
+public class HomePageActivity extends AppCompatActivity {
     public static ActivityMainBinding binding;
     private ArrayList<String> imagesName;
     private ApiService apiService = new ApiService();
+    private HomePagePresenter homePagePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        homePagePresenter = new HomePagePresenter(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -44,21 +45,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.dropdown_item, imagesName);
             binding.categorieAuto.setAdapter(arrayAdapter);
         });
-        btnPressed(binding);
+
+        //when selected an image open the activity to display the image choosen
+        homePagePresenter.buttonPressed(binding);
     }
 
-    //when selected an image open the activity to display the image choosen
-    public void btnPressed(ActivityMainBinding binding) {
-        binding.mainActivityButton.setOnClickListener(view -> {
-            String currentSelection = binding.categorieAuto.getText().toString();
-            if (!currentSelection.equals(getResources().getString(R.string.no_image_available)) &&
-                    !currentSelection.equals(getResources().getString(R.string.choose_image))) {
-
-                Intent intent = new Intent(MainActivity.this, ImageViewActivity.class);
-                intent.putExtra("currentSelection", currentSelection);
-                startActivity(intent);
-            }else
-                Toast.makeText(getApplicationContext(), "Scegli un immagine!", Toast.LENGTH_SHORT).show();
-        });
+    public Activity getStartActivity(){
+        return this;
     }
 }
