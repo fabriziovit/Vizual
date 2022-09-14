@@ -16,6 +16,7 @@ import android.os.StrictMode;
 import android.view.View;
 
 import com.app.vizual.Interfaces.FragmentToActivity;
+import com.app.vizual.Models.Image;
 import com.app.vizual.Models.IntegerModel;
 import com.app.vizual.Presenters.ImageViewPresenter;
 import com.app.vizual.Fragment.ZoomFragment;
@@ -27,8 +28,7 @@ import retrofit2.Call;
 public class ImageViewActivity extends AppCompatActivity implements FragmentToActivity {
     private ActivityImageViewBinding binding;
     private ApiService apiService = new ApiService();
-    private String currentSelection;
-    private boolean isFABOpen = false;
+    private Image image;
     private FragmentManager fragmentManager;
     public static Bitmap originalBitmap;
     public static Bitmap bm;
@@ -49,7 +49,7 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         //GetExtra per prendere il nome dell'immagine ed eseguire le API
         Bundle bundle = getIntent().getExtras();
         if (bundle.getString("currentSelection") != null) {
-            currentSelection = bundle.getString("currentSelection");
+            image = new Image(bundle.getString("currentSelection"));
         }
 
         // Call API
@@ -58,17 +58,17 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            Call<ResponseBody> call = apiService.getObjRetrofit().getImage(currentSelection);
+            Call<ResponseBody> call = apiService.getObjRetrofit().getImage(image.getName());
             apiService.callRetrofit(call, response -> {
                 if (response != null) {
                     bm = BitmapFactory.decodeStream(response.byteStream());
                     originalBitmap = bm;
 
-                    Call<IntegerModel> callWidth = apiService.getObjRetrofit().getWidth(currentSelection);
+                    Call<IntegerModel> callWidth = apiService.getObjRetrofit().getWidth(image.getName());
                     apiService.callRetrofit(callWidth, responseWidth -> {
                         if (responseWidth != null) {
                             widthOriginal = responseWidth.getData().get(0);
-                            Call<IntegerModel> callHeight = apiService.getObjRetrofit().getHeight(currentSelection);
+                            Call<IntegerModel> callHeight = apiService.getObjRetrofit().getHeight(image.getName());
                             apiService.callRetrofit(callHeight, responseHeight -> {
                                 if (responseHeight != null) {
                                     heightOriginal = responseHeight.getData().get(0);
@@ -82,14 +82,14 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
                         }
                     });
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        Call<ResponseBody> callGray = apiService.getObjRetrofit().getImageGrayscaled(currentSelection);
+                        Call<ResponseBody> callGray = apiService.getObjRetrofit().getImageGrayscaled(image.getName());
                         apiService.callRetrofit(callGray, responseBody -> {
                             if (responseBody != null) {
                                 grayscaledImage = BitmapFactory.decodeStream(responseBody.byteStream());
                             }
                         });
                     });
-                    imageViewPresenter.replaceFragment(new ZoomFragment(bm, currentSelection), binding);
+                    imageViewPresenter.replaceFragment(new ZoomFragment(bm, image.getName()), binding);
                     binding.progressBar.setVisibility(View.GONE);
                     binding.textView.setVisibility(View.GONE);
                 }
@@ -97,13 +97,13 @@ public class ImageViewActivity extends AppCompatActivity implements FragmentToAc
         }
 
         //click to open the fragment and the visualization of the crop side
-        imageViewPresenter.clickCropButton(binding, currentSelection);
+        imageViewPresenter.clickCropButton(binding, image.getName());
         //click to return to the home
         imageViewPresenter.clickHomeButton(binding);
         //click to open the floating button menu
         imageViewPresenter.clickLogoButton(binding);
         //click to open the fragment and the visualization of the zoom side
-        imageViewPresenter.clickZoomButton(binding, currentSelection);
+        imageViewPresenter.clickZoomButton(binding, image.getName());
     }
 
     public Activity getStartActivity(){
