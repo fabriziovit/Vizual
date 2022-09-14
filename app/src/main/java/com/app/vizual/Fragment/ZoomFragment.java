@@ -1,6 +1,5 @@
 package com.app.vizual.Fragment;
 
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 
+import com.app.vizual.Models.Image;
 import com.app.vizual.Presenters.ZoomPresenter;
 import com.app.vizual.Util.CustomGlideApp;
 import com.app.vizual.Interfaces.FragmentToActivity;
@@ -23,12 +23,11 @@ import com.google.android.material.navigation.NavigationView;
 
 public class ZoomFragment extends Fragment{
     public static Bitmap bm;
-    private String nameImage;
+    private Image image;
     private SubsamplingScaleImageView subsamplingScaleImageView;
     private FloatingActionButton fabMenu;
     private FragmentToActivity mCallback;
     private NavigationView navMenu;
-    private boolean isMenuOpen = false;
     public static int left = 0, top = 0;
     public static boolean flag = false;
     private Switch drawerSwitch;
@@ -40,12 +39,12 @@ public class ZoomFragment extends Fragment{
 
     public ZoomFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
-        this.nameImage = nameImage;
+        image = new Image(nameImage);
     }
 
     public ZoomFragment(Bitmap bitmap, String nameImage, boolean bool) {
         bm = bitmap;
-        this.nameImage = nameImage;
+        image = new Image(nameImage);
         flag = bool;
     }
 

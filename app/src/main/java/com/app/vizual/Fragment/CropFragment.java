@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.vizual.Models.Image;
 import com.app.vizual.Presenters.CropPresenter;
 import com.app.vizual.Interfaces.FragmentToActivity;
 import com.app.vizual.R;
@@ -18,7 +19,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class CropFragment extends Fragment {
     public static Bitmap bm;
-    private String nameImage;
+    private Image image;
     private CropImageView cropImageView;
     private FloatingActionButton fabCancel, fabCrop, fabOriginalImage;
     public static boolean isOverlayShowed = false;
@@ -32,7 +33,7 @@ public class CropFragment extends Fragment {
 
     public CropFragment(Bitmap bitmap, String nameImage) {
         bm = bitmap;
-        this.nameImage = nameImage;
+        image = new Image(nameImage);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class CropFragment extends Fragment {
             isOverlayShowed = true;
 
             //crop the image passing the coordinates for an api call
-            cropPresenter.clickFabCrop(fabCrop, cropImageView, nameImage);
+            cropPresenter.clickFabCrop(fabCrop, cropImageView, image.getName());
             //set invisible the crop overlay
             cropPresenter.clickFabCancel(fabCancel, cropImageView);
             //Reset Image to the original dimension if it was zoomed or cropped
